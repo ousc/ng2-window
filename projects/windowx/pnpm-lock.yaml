@@ -1,0 +1,65 @@
+lockfileVersion: '6.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+dependencies:
+  '@angular/common':
+    specifier: ^16.1.0
+    version: 16.1.0(@angular/core@16.1.0)(rxjs@7.8.1)
+  '@angular/core':
+    specifier: ^16.1.0
+    version: 16.1.0(rxjs@7.8.1)(zone.js@0.13.1)
+  tslib:
+    specifier: ^2.3.0
+    version: 2.3.0
+  when-case:
+    specifier: ^1.0.11
+    version: 1.0.11
+
+packages:
+
+  /@angular/common@16.1.0(@angular/core@16.1.0)(rxjs@7.8.1):
+    resolution: {integrity: sha512-DLcp1Y3HkLyK5G00XhMlvdT47fp3HRbSd5o8i5Nkh+B7UojllfpeERr1XVSuUQ5M6LuF0du1NIg6y/lVHDFBUg==}
+    engines: {node: ^16.14.0 || >=18.10.0}
+    peerDependencies:
+      '@angular/core': 16.1.0
+      rxjs: ^6.5.3 || ^7.4.0
+    dependencies:
+      '@angular/core': 16.1.0(rxjs@7.8.1)(zone.js@0.13.1)
+      rxjs: 7.8.1
+      tslib: 2.3.0
+    dev: false
+
+  /@angular/core@16.1.0(rxjs@7.8.1)(zone.js@0.13.1):
+    resolution: {integrity: sha512-u6zLSV/Fml5O1lDuGzylxITHCk/o/w7PD8NEHSdxeQ3fSLVb7RVdpPgUsIV7cVPyBNHLpQC4V0vMBATa0QkHPA==}
+    engines: {node: ^16.14.0 || >=18.10.0}
+    peerDependencies:
+      rxjs: ^6.5.3 || ^7.4.0
+      zone.js: ~0.13.0
+    dependencies:
+      rxjs: 7.8.1
+      tslib: 2.3.0
+      zone.js: 0.13.1
+    dev: false
+
+  /rxjs@7.8.1:
+    resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
+    dependencies:
+      tslib: 2.3.0
+    dev: false
+
+  /tslib@2.3.0:
+    resolution: {integrity: sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==}
+    dev: false
+
+  /when-case@1.0.11:
+    resolution: {integrity: sha512-KhAtyj5WhDvg5UsdtqHCLL9IYmw0nZsp8mU1i/eVr0ayeC+vnkeP3l9AcM7DSf7kXiR3T0OCEX6KCVFA1W7kBQ==}
+    dev: false
+
+  /zone.js@0.13.1:
+    resolution: {integrity: sha512-+bIeDAFEBYuXRuU3qGQvzdPap+N1zjM4KkBAiiQuVVCrHrhjDuY6VkUhNa5+U27+9w0q3fbKiMCbpJ0XzMmSWA==}
+    dependencies:
+      tslib: 2.3.0
+    dev: false

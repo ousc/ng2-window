@@ -1,0 +1,44 @@
+<div id="back-drop"
+     [ngStyle]="position"
+     [style.width.px]='width'
+     [style.height.px]='height'
+     [style.cursor]='cursorStyle'
+     [style.z-index]='zIndex'
+     [style.display]='display'
+></div>
+<div id="window"
+     [ngClass]="{'selected': selected, 'minimized': minimized, 'maximized': maximized}"
+     [ngStyle]="position"
+     [style.width.px]='width'
+     [style.height.px]='height'
+     [style.cursor]='cursorStyle'
+     [style.z-index]='zIndex'
+     [style.display]='display'
+     (mouseenter)='windowMouseEnter($event)'
+     (mousedown)='windowMouseDown($event)'
+     (mouseleave)='windowMouseLeave($event)'>
+    <div id="titleBar"
+         *ngIf="!!title"
+         (dblclick)="maximize()"
+         [ngClass]="{'no-drag': !draggable}"
+         (mousedown)="titleBarMouseDown($event)">
+        <div class="titleName d-inline-block" [title]="title">
+            <ng-container *stringTemplateOutlet="icon"><img class="icon" [src]="icon" alt="icon"/></ng-container>
+            <ng-container *stringTemplateOutlet="title">{{title}}</ng-container>
+        </div>
+        <close-icon title="Close window." (click)="close()"/>
+        <maximize-icon [title]="maximized ? 'Window mode.' :'Maximize.'" (click)="maximize()"/>
+        <minimize-icon title="minimize" (click)="minimize()"/>
+    </div>
+    <div class="body"
+         [ngClass]="contentScrollable ? 'no-scroll' : ''"
+         [style.height.px]='height - 43'
+         [ngStyle]="bodyStyle">
+        <ng-container *stringTemplateOutlet="content">{{content}}</ng-container>
+        <ng-content></ng-content>
+    </div>
+</div>
+
+<div class="window-loading" *ngIf="loading">
+    <ng-container *stringTemplateOutlet="loadingTip">{{loadingTip}}</ng-container>
+</div>
