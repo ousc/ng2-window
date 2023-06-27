@@ -1,11 +1,13 @@
 import {NgModule} from '@angular/core';
 import {WindowxComponent} from './windowx.component';
-import {CloseIcon} from "./components/icon-button/close.icon";
-import {MaximizeIcon} from "./components/icon-button/maximize.icon";
-import {MinimizeIcon} from "./components/icon-button/minimize.icon";
+import {CloseIcon} from "./components/icon/close.icon";
+import {MaximizeIcon} from "./components/icon/maximize.icon";
+import {MinimizeIcon} from "./components/icon/minimize.icon";
 import {BrowserModule} from "@angular/platform-browser";
 import {CommonModule, NgOptimizedImage} from "@angular/common";
 import {NzOutletModule} from "./directive/outlet.module";
+import {LoadingIcon} from "./components/icon/loading.icon";
+import {MaximizeDIcon} from "./components/icon/maximized.icon";
 
 
 @NgModule({
@@ -13,7 +15,9 @@ import {NzOutletModule} from "./directive/outlet.module";
         WindowxComponent,
         CloseIcon,
         MaximizeIcon,
-        MinimizeIcon
+        MinimizeIcon,
+        LoadingIcon,
+        MaximizeDIcon
     ],
     imports: [
         BrowserModule,
@@ -24,7 +28,9 @@ import {NzOutletModule} from "./directive/outlet.module";
         WindowxComponent,
         CloseIcon,
         MaximizeIcon,
-        MinimizeIcon
+        MinimizeIcon,
+        LoadingIcon,
+        MaximizeDIcon
     ]
 })
 export class WindowxModule {

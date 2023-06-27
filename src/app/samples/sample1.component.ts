@@ -3,15 +3,23 @@ import {WindowxComponent} from "../../../projects/windowx/src/lib/windowx.compon
 import {WindowxService} from "../../../projects/windowx/src/lib/windowx.service";
 
 @Component({
-  selector: 'example1-component',
+  selector: 'sample1-component',
   template: `
-    <ng-template #tpl>
-      You are arrived!
-    </ng-template>
+    <div class="body">
+      <ng-template #tpl>
+        this is window x
+      </ng-template>
+    </div>
   `,
-  styles: [],
+  styles: [`
+    .body {
+      width: 100vw;
+      height: 100vh;
+      background: darkblue;
+    }
+  `],
 })
-export class Example1Component implements OnInit {
+export class Sample1Component implements OnInit {
   constructor(private windowxService: WindowxService) {}
 
   @ViewChild('tpl', {static: true}) tpl: TemplateRef<any>;
@@ -27,8 +35,28 @@ export class Example1Component implements OnInit {
       width: 800,
       height: 500,
       content: this.tpl,
-      offsetX: 100,
+      offsetX: 200,
       offsetY: 100,
+      align: 'leftTop',
+      bodyStyle: {
+        background: '#FFF',
+      },
+    }).then((win: WindowxComponent) => {
+      this.windowManager.tpl.instance = win;
+
+      win.onClose.subscribe(() => {
+        this.windowManager.tpl.visible = false;
+        this.windowManager.tpl.instance = null;
+      });
+    });
+    this.windowxService.create({
+      title: '产品报表',
+      icon: 'https://cdn.leinbo.com/assets/app.png',
+      width: 300,
+      height: 400,
+      content: this.tpl,
+      offsetX: 300,
+      offsetY: 400,
       align: 'leftTop',
       bodyStyle: {
         background: '#FFF',

@@ -1,4 +1,5 @@
-<div id="back-drop"
+<div class="ng-window-back-drop"
+     [hidden]="loading"
      [ngStyle]="position"
      [style.width.px]='width'
      [style.height.px]='height'
@@ -6,7 +7,8 @@
      [style.z-index]='zIndex'
      [style.display]='display'
 ></div>
-<div id="window"
+<div class="ng-window"
+     [hidden]="loading"
      [ngClass]="{'selected': selected, 'minimized': minimized, 'maximized': maximized}"
      [ngStyle]="position"
      [style.width.px]='width'
@@ -17,18 +19,22 @@
      (mouseenter)='windowMouseEnter($event)'
      (mousedown)='windowMouseDown($event)'
      (mouseleave)='windowMouseLeave($event)'>
-    <div id="titleBar"
+
+    <div #titleBar class="win-title-bar"
          *ngIf="!!title"
          (dblclick)="maximize()"
          [ngClass]="{'no-drag': !draggable}"
          (mousedown)="titleBarMouseDown($event)">
-        <div class="titleName d-inline-block" [title]="title">
+        <div class="title-name" [title]="title">
             <ng-container *stringTemplateOutlet="icon"><img class="icon" [src]="icon" alt="icon"/></ng-container>
-            <ng-container *stringTemplateOutlet="title">{{title}}</ng-container>
+            <ng-container *stringTemplateOutlet="title">{{ title }}</ng-container>
         </div>
-        <close-icon title="Close window." (click)="close()"/>
-        <maximize-icon [title]="maximized ? 'Window mode.' :'Maximize.'" (click)="maximize()"/>
-        <minimize-icon title="minimize" (click)="minimize()"/>
+        <div class="win-icons">
+            <close-icon class="win-icon" title="Close window." (click)="close()"/>
+            <minimize-icon class="win-icon" title="minimize" (click)="minimize()"/>
+            <maximize-icon class="win-icon" *ngIf="!maximized" [title]="'Maximize.'" (click)="maximize()"/>
+            <maximized-icon class="win-icon" *ngIf="maximized" [title]="'Window mode.'" (click)="maximize()"/>
+        </div>
     </div>
     <div class="body"
          [ngClass]="contentScrollable ? 'no-scroll' : ''"
@@ -39,6 +45,7 @@
     </div>
 </div>
 
-<div class="window-loading" *ngIf="loading">
+<div class="window-loading" [ngStyle]="position" *ngIf="loading">
+    <div><loading-icon/></div>
     <ng-container *stringTemplateOutlet="loadingTip">{{loadingTip}}</ng-container>
 </div>

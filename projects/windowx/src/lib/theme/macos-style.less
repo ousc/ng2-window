@@ -1,0 +1,158 @@
+// 圆角相关变量
+@window-border-radius: 10px;
+@top-bar-radius: 10px 10px 0 0;
+@content-radius: 0 0 10px 10px;
+
+// 颜色相关变量
+@window-bg-color: #FFF;
+@back-drop-bg-color: #999;
+@win-title-bar-color: #000;
+@win-title-bar-bg-color: #FFF;
+@selected-win-title-bar-color: #000;
+@selected-win-title-bar-bg-color: #FFF;
+@win-body-bg-color: #FFF;
+
+// 宽度/高度相关变量
+@window-bar-height: 33px;
+@icon-width: 20px;
+
+//边框相关变量
+@window-box-shadow: 1px 0 7px #999;
+@win-title-bar-border-width: 0 0 1px 0;
+@win-title-bar-border-color: #DDD;
+@win-title-bar-border-style: solid;
+@win-title-bar-offset: 3px;
+@win-body-offset: 3px;
+@selected-window-box-shadow: 5px 10px 5px rgba(0, 0, 0, 0.46);
+
+// 数值相关变量
+@body-drag-area-width: 3px;
+
+//字体相关变量
+@title-bar-font-family: PingFang SC, -apple-system, BlinkMacSystemFont Segoe UI, Microsoft YaHei Roboto Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+@win-title-bar-font-size: 14px;
+
+//其他
+@win-title-bar-text-align: center;
+
+
+.ng-window {
+
+  .win-icons {
+    display: inline-block;
+    cursor: default;
+    position: absolute;
+    left: 10px;
+    top: 5px;
+
+    /deep/ .win-icon {
+      display: inline-block;
+      padding: 2px;
+      border-radius: 7px;
+      margin: 4px;
+      text-align: center;
+      background-color: #DDD;
+      border: solid 1px #CCC;
+
+      svg {
+        width: 7px;
+        height: 7px;
+        display: block;
+        visibility: hidden;
+      }
+
+      &:hover svg {
+        visibility: visible;
+      }
+    }
+
+    close-icon:hover {
+      background: #fc5e5a !important;
+      border: solid 1px #dc3b39 !important;
+    }
+
+    minimize-icon:hover {
+      background: #fbc13c !important;
+      border: solid 1px #eaad2e !important;
+    }
+
+    maximize-icon:hover {
+      background: #2ccd47 !important;
+      border: solid 1px #12ad2c !important;
+    }
+
+    maximized-icon:hover {
+      background: #2ccd47 !important;
+      border: solid 1px #12ad2c !important;
+    }
+  }
+
+  &.selected {
+    close-icon {
+      background: #fc5e5a !important;
+      border: solid 1px #dc3b39 !important;
+    }
+
+    minimize-icon {
+      background: #fbc13c !important;
+      border: solid 1px #eaad2e !important;
+    }
+
+    maximize-icon {
+      background: #2ccd47 !important;
+      border: solid 1px #12ad2c !important;
+    }
+
+    maximized-icon {
+      background: #2ccd47 !important;
+      border: solid 1px #12ad2c !important;
+      padding: 1px;
+    }
+
+    .win-icon svg {
+      width: 9px !important;
+      height: 9px !important;
+    }
+  }
+}
+
+.window-loading {
+  background: #FFF;
+  border-radius: @window-border-radius;
+  padding: 10px;
+  width: 200px;
+  text-align: center;
+}
+
+:host .no-scroll ::-webkit-scrollbar {
+  width: 9px;
+  height: 7px;
+  pointer-events: none;
+}
+
+
+:host ::-webkit-scrollbar {
+  width: 9px;
+  height: 7px
+}
+
+:host ::-webkit-scrollbar-track {
+  background: 0 0
+}
+
+:host ::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: rgba(155, 155, 155, 0.8);
+}
+
+:host ::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 99, 99);
+}
+
+:host ::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(155, 155, 155, 0.8);
+}
+
+:host ::-webkit-scrollbar-corner {
+  background: 0 0
+}

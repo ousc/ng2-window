@@ -23,7 +23,7 @@ export interface WindowConfig {
     zIndex?: number;
     titleStyle?: any;
     bodyStyle?: any;
-    fullscreen?: boolean;
+    maximized?: boolean;
     icon?: TemplateRef<any> | string | null;
     draggable?: boolean;
     closeOnNavigation?: boolean;

@@ -1,9 +1,14 @@
-import {Component, ContentChild, EventEmitter, HostListener, Input, Output, TemplateRef} from '@angular/core';
+import {
+    AfterViewInit,
+    Component, ElementRef,
+    EventEmitter,
+    HostListener,
+    Input,
+    Output,
+    TemplateRef, ViewChild
+} from '@angular/core';
 import {WindowConfig, WindowxService} from "./windowx.service";
-import {CloseIcon} from "./components/icon-button/close.icon";
-import {MaximizeIcon} from "./components/icon-button/maximize.icon";
-import {MinimizeIcon} from "./components/icon-button/minimize.icon";
-import {In, when, If} from "when-case";
+import {If, In, when} from "when-case";
 
 interface WindowSize {
     offsetY: number;
@@ -14,21 +19,20 @@ interface WindowSize {
 }
 
 @Component({
-    selector: 'lib-windowx',
+    selector: 'ng-windowx',
     templateUrl: 'windowx.component.html',
     styleUrls: ['windowx.component.less'],
 })
-export class WindowxComponent {
+export class WindowxComponent implements AfterViewInit {
     windowId = 'window' + Math.floor(Math.random() * 1000000);
 
     @Input() width: number = 600;
     @Input() height: number = 400;
-    @Input() minWidth: number = 120;
+    @Input() minWidth: number = 175;
     @Input() minHeight: number = 100;
     @Input() offsetY: number = 200;
     @Input() offsetX: number = 200;
-
-    loading = true; // is loading
+    @Input() loading = true; // is loading
     loadingTip: string | TemplateRef<any> = 'Loading...'; // loading tip
 
     contentScrollable: boolean = false;
@@ -82,6 +86,7 @@ export class WindowxComponent {
     @Input() align: 'leftTop' | 'rightTop' | 'leftBottom' | 'rightBottom' = 'leftTop';
 
     @Input() title: string | TemplateRef<any> = 'Window Name';
+    titleHeight = 0;
     @Input() bodyStyle: any = {};
     @Input() zIndex = 0;
     @Input() icon: string | TemplateRef<any> | null = null;
@@ -102,7 +107,7 @@ export class WindowxComponent {
 
     mouseEntered: MouseEvent;
 
-    borderWidth = 2;
+    borderWidth = 4;
 
     cursorStyle = 'default';
     display = 'none';
@@ -117,11 +122,10 @@ export class WindowxComponent {
     constructor(private windowxService: WindowxService) {
     }
 
-    fullscreen = false;
-
     async ngOnInit(): Promise<void> {
-        if (this.fullscreen) {
+        if (this.maximized) {
             this.display = 'none';
+            this.maximized = false;
             await this.maximize();
             this.display = 'block';
             this.loading = false;
@@ -293,6 +297,9 @@ export class WindowxComponent {
     }
 
     titleBarMouseDown(event: MouseEvent) {
+        if (event.button === 2) {
+            return;
+        }
         this.dragging = true;
         this.clickedX = event.clientX - this.left;
         this.clickedY = event.clientY - this.top;
@@ -314,7 +321,7 @@ export class WindowxComponent {
 
     windowMouseDown(event: MouseEvent) {
         this.windowxService.selectedWindow = this.windowId;
-        if (!this.draggable) {
+        if (!this.draggable || event.button === 2) {
             return;
         }
         this.windowMouseDownFlag = true;
@@ -392,7 +399,7 @@ export class WindowxComponent {
                     this.updateOffsetY(0);
                 };
                 setTimeout(() => {
-                    this.propertyBeforeMaximize = this;
+                    this.propertyBeforeMaximize = {...this};
                     this.updateOffsetX(0);
                     this.updateOffsetY(0);
                     this.height = window.innerHeight;
@@ -431,27 +438,11 @@ export class WindowxComponent {
         }, 200);
     }
 
-
-    @Input() theme: any = null;
-
-    @ContentChild(CloseIcon)
-    public set closeIcon(icon: CloseIcon) {
-        if (icon) {
-            icon.theme = this.theme;
-        }
+    @ViewChild('titleBar', {static: false}) set titleBar(titleBar: ElementRef) {
+        this.titleHeight = titleBar.nativeElement.offsetHeight;
     }
-
-    @ContentChild(MaximizeIcon)
-    public set maximizeIcon(icon: MaximizeIcon) {
-        if (icon) {
-            icon.theme = this.theme;
-        }
-    }
-
-    @ContentChild(MinimizeIcon)
-    public set minimizeIcon(icon: MinimizeIcon) {
-        if (icon) {
-            icon.theme = this.theme;
-        }
+    ngAfterViewInit(): void {
+        this.updateOffsetX(this.offsetX);
+        this.updateOffsetY(this.offsetY);
     }
 }
