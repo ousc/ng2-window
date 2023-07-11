@@ -14,6 +14,7 @@ import {Sample1Component} from "./samples/sample1.component";
     imports: [
         BrowserModule,
         CommonModule,
+        WindowxModule
     ],
     bootstrap: [AppComponent]
 })

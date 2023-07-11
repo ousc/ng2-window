@@ -8,6 +8,7 @@ import {CommonModule, NgOptimizedImage} from "@angular/common";
 import {NzOutletModule} from "./directive/outlet.module";
 import {LoadingIcon} from "./components/icon/loading.icon";
 import {MaximizeDIcon} from "./components/icon/maximized.icon";
+import {DockComponent} from "./components/dock/dock.component";
 
 
 @NgModule({
@@ -17,20 +18,23 @@ import {MaximizeDIcon} from "./components/icon/maximized.icon";
         MaximizeIcon,
         MinimizeIcon,
         LoadingIcon,
-        MaximizeDIcon
+        MaximizeDIcon,
+        DockComponent
     ],
     imports: [
         BrowserModule,
         CommonModule,
         NzOutletModule,
-        NgOptimizedImage],
+        NgOptimizedImage
+    ],
     exports: [
         WindowxComponent,
         CloseIcon,
         MaximizeIcon,
         MinimizeIcon,
         LoadingIcon,
-        MaximizeDIcon
+        MaximizeDIcon,
+        DockComponent
     ]
 })
 export class WindowxModule {

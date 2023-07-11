@@ -10,7 +10,7 @@ import {Component} from '@angular/core';
         viewBox="0 0 10 10"
     >
       <path
-          fill="#000"
+          fill="#444"
           fill-rule="evenodd"
           d="M0 5h10v1H0z"
       />

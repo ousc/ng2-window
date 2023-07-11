@@ -1,11 +1,13 @@
 import {
     AfterViewInit,
-    Component, ElementRef,
+    Component,
+    ElementRef,
     EventEmitter,
     HostListener,
     Input,
     Output,
-    TemplateRef, ViewChild
+    TemplateRef,
+    ViewChild
 } from '@angular/core';
 import {WindowConfig, WindowxService} from "./windowx.service";
 import {If, In, when} from "when-case";
@@ -20,8 +22,7 @@ interface WindowSize {
 
 @Component({
     selector: 'ng-windowx',
-    templateUrl: 'windowx.component.html',
-    styleUrls: ['windowx.component.less'],
+    templateUrl: 'windowx.component.html'
 })
 export class WindowxComponent implements AfterViewInit {
     windowId = 'window' + Math.floor(Math.random() * 1000000);
@@ -33,7 +34,29 @@ export class WindowxComponent implements AfterViewInit {
     @Input() offsetY: number = 200;
     @Input() offsetX: number = 200;
     @Input() loading = true; // is loading
-    loadingTip: string | TemplateRef<any> = 'Loading...'; // loading tip
+
+    @Input() language: 'zh' | 'en' = 'zh';
+    loadingTip: string | TemplateRef<any> = this.getLocaleText('loading');
+
+    getLocaleText(text: 'loading' | 'close' | 'maximize' | 'minimize' | 'windowMode') {
+        const dictionary = {
+            'zh': {
+                loading: '加载中...',
+                close: '关闭窗口',
+                maximize: '最大化',
+                minimize: '最小化',
+                windowMode: '窗口化',
+            },
+            'en': {
+                loading: 'Loading...',
+                close: 'Close Window',
+                maximize: 'Maximize',
+                minimize: 'Minimize',
+                windowMode: 'Window Mode',
+            }
+        }
+        return dictionary[this.language][text];
+    }
 
     contentScrollable: boolean = false;
 

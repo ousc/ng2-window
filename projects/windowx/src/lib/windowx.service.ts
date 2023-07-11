@@ -1,14 +1,16 @@
 import {
-    ApplicationRef, ComponentFactoryResolver,
+    ApplicationRef,
+    ComponentFactoryResolver,
     ComponentRef,
     Injectable,
     Injector,
-    TemplateRef, ViewContainerRef,
+    TemplateRef,
 } from '@angular/core';
 import {NavigationStart, Router} from '@angular/router';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {WindowxComponent} from "./windowx.component";
+import {DockComponent} from "./components/dock/dock.component";
 
 export interface WindowConfig {
     title?: TemplateRef<any> | string;
@@ -22,6 +24,7 @@ export interface WindowConfig {
     offsetX?: number;
     zIndex?: number;
     titleStyle?: any;
+    language?: 'zh' | 'en';
     bodyStyle?: any;
     maximized?: boolean;
     icon?: TemplateRef<any> | string | null;
@@ -60,6 +63,7 @@ export class WindowxService {
     instances: ComponentRef<WindowxComponent>[] = [];
     selectedWindow = null;
     minimizeItems = {};
+    dockComponentRef: ComponentRef<DockComponent> = null;
 
     destroy(windowId: string) {
         const componentRef = this.instances.find(item => item.instance.windowId === windowId);
@@ -69,89 +73,33 @@ export class WindowxService {
             this.instances = this.instances.filter(item => item.instance.windowId !== windowId);
             this.selectedWindow = null;
         }
+        if(this.instances.length === 0) {
+            this.destroyDock();
+        }
     }
 
     addMinimizeItem(windowComponent: WindowxComponent) {
-        const minimizeWrapper = document.querySelector('#ousc-window-minimize-wrapper');
-        const minimizeItem = document.createElement('div');
-        minimizeItem.id = windowComponent.windowId + '-minimize-item';
-        minimizeItem.innerHTML = windowComponent.title instanceof TemplateRef ? windowComponent.title.elementRef.nativeElement.innerHTML : windowComponent.title;
-        if (windowComponent.closable) {
-            const closeIcon = document.createElement('img');
-            closeIcon.src = 'https://cdn.leinbo.com/assets/images/close.svg';
-            closeIcon.style.width = '20px';
-            closeIcon.style.height = '20px';
-            closeIcon.style.marginLeft = '5px';
-            closeIcon.style.cursor = 'pointer';
-            closeIcon.onclick = () => {
-                windowComponent.close();
-            }
-            minimizeItem.appendChild(closeIcon);
-        }
-        updateStyles({
-            cursor: 'pointer',
-            flex: '1',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'linear-gradient(to right, #e6f7ff, #fbfbfb, rgba(232, 232, 232, 0.37))',
-            border: '1px solid #ccc',
-            borderRadius: '5px',
-            padding: '15px 15px',
-            margin: '5px',
-            fontSize: '12px',
-            color: '#333',
-            textAlign: 'center',
-            userSelect: 'none',
-            pointerEvents: 'auto',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-        }, minimizeItem);
-        minimizeItem.onclick = () => {
-            windowComponent.minimize();
-            windowComponent.zIndex = this.maxZIndex++;
-            document.querySelector('#ousc-window-minimize-wrapper').removeChild(minimizeItem);
-            this.selectedWindow = windowComponent.windowId;
-        };
-        minimizeWrapper.appendChild(minimizeItem);
-        this.minimizeItems[windowComponent.windowId] = minimizeItem;
+        this.dockComponentRef.instance.docks.push(windowComponent);
     }
 
-    createWrapper() {
-        if (this.instances.length === 0 && document.querySelector('#ousc-window-wrapper') === null) {
-            const div = document.createElement('div');
-            div.id = 'ousc-window-wrapper';
-            updateStyles({
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                overflow: 'hidden',
-                zIndex: 999,
-                pointerEvents: 'none',
-            }, div);
-            document.body.appendChild(div);
+    createDock() {
+        if (!this.dockComponentRef) {
+            this.dockComponentRef = this._cfr.resolveComponentFactory(DockComponent).create(this._injector);
+            this._appRef.attachView(this.dockComponentRef.hostView);
+            document.body.appendChild(this.dockComponentRef.location.nativeElement);
+        }
+    }
 
-            const div2 = document.createElement('div');
-            div2.id = 'ousc-window-minimize-wrapper';
-            updateStyles({
-                position: 'fixed',
-                right: '160px',
-                bottom: '5px',
-                width: 'auto',
-                height: '40px',
-                display: 'inline-flex',
-                zIndex: 999,
-                pointerEvents: 'none',
-            }, div2);
-            document.body.appendChild(div2);
+    destroyDock() {
+        if (this.dockComponentRef) {
+            this._appRef.detachView(this.dockComponentRef.hostView);
+            this.dockComponentRef.destroy();
+            this.dockComponentRef = null;
         }
     }
 
     create(options: WindowConfig): Promise<WindowxComponent> {
-        this.createWrapper();
+        this.createDock();
         return new Promise(resolve => {
             const componentRef = this.componentFactory.create(this._injector);
             //if the options.left > window.innerWidth, then set left = window.innerWidth - options.width

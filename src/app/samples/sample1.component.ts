@@ -15,7 +15,7 @@ import {WindowxService} from "../../../projects/windowx/src/lib/windowx.service"
     .body {
       width: 100vw;
       height: 100vh;
-      background: darkblue;
+      background: url('/assets/ng-windowx-large.png') 100%;
     }
   `],
 })
@@ -30,8 +30,8 @@ export class Sample1Component implements OnInit {
 
   ngOnInit(): void {
     this.windowxService.create({
-      title: '产品报表',
-      icon: 'https://cdn.leinbo.com/assets/app.png',
+      title: 'Window 1',
+      icon: '/assets/logo.png',
       width: 800,
       height: 500,
       content: this.tpl,
@@ -39,7 +39,7 @@ export class Sample1Component implements OnInit {
       offsetY: 100,
       align: 'leftTop',
       bodyStyle: {
-        background: '#FFF',
+        lineHeight: '1.5',
       },
     }).then((win: WindowxComponent) => {
       this.windowManager.tpl.instance = win;
@@ -50,16 +50,17 @@ export class Sample1Component implements OnInit {
       });
     });
     this.windowxService.create({
-      title: '产品报表',
-      icon: 'https://cdn.leinbo.com/assets/app.png',
+      title: 'Window 2',
+      icon: '/assets/logo.png',
       width: 300,
       height: 400,
       content: this.tpl,
+      language: 'en',
       offsetX: 300,
       offsetY: 400,
       align: 'leftTop',
       bodyStyle: {
-        background: '#FFF',
+        lineHeight: '1.5',
       },
     }).then((win: WindowxComponent) => {
       this.windowManager.tpl.instance = win;

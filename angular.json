@@ -30,6 +30,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/theme.less",
               "src/styles.less"
             ],
             "scripts": []
@@ -93,6 +94,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/theme.less",
               "src/styles.less"
             ],
             "scripts": []

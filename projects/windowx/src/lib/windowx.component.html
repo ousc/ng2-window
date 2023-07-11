@@ -26,26 +26,30 @@
          [ngClass]="{'no-drag': !draggable}"
          (mousedown)="titleBarMouseDown($event)">
         <div class="title-name" [title]="title">
-            <ng-container *stringTemplateOutlet="icon"><img class="icon" [src]="icon" alt="icon"/></ng-container>
+            <ng-container *stringTemplateOutlet="icon"><img class="icon" draggable="false" [src]="icon" alt="icon"/>
+            </ng-container>
             <ng-container *stringTemplateOutlet="title">{{ title }}</ng-container>
         </div>
         <div class="win-icons">
-            <close-icon class="win-icon" title="Close window." (click)="close()"/>
-            <minimize-icon class="win-icon" title="minimize" (click)="minimize()"/>
-            <maximize-icon class="win-icon" *ngIf="!maximized" [title]="'Maximize.'" (click)="maximize()"/>
-            <maximized-icon class="win-icon" *ngIf="maximized" [title]="'Window mode.'" (click)="maximize()"/>
+            <close-icon class="win-icon" [title]="getLocaleText('close')" (click)="close()"/>
+            <minimize-icon class="win-icon" [title]="getLocaleText('minimize')" (click)="minimize()"/>
+            <maximize-icon class="win-icon" [title]="getLocaleText('maximize')" *ngIf="!maximized" (click)="maximize()"/>
+            <maximized-icon class="win-icon" [title]="getLocaleText('windowMode')" *ngIf="maximized" (click)="maximize()"/>
         </div>
     </div>
     <div class="body"
          [ngClass]="contentScrollable ? 'no-scroll' : ''"
-         [style.height.px]='height - 43'
          [ngStyle]="bodyStyle">
         <ng-container *stringTemplateOutlet="content">{{content}}</ng-container>
         <ng-content></ng-content>
     </div>
 </div>
 
-<div class="window-loading" [ngStyle]="position" *ngIf="loading">
-    <div><loading-icon/></div>
-    <ng-container *stringTemplateOutlet="loadingTip">{{loadingTip}}</ng-container>
-</div>
+<ng-container *stringTemplateOutlet="loadingTip">
+    <div class="window-loading" [ngStyle]="position" *ngIf="loading">
+        <div>
+            <loading-icon/>
+        </div>
+        <ng-container *stringTemplateOutlet="loadingTip">{{loadingTip}}</ng-container>
+    </div>
+</ng-container>
