@@ -1,6 +1,7 @@
 {
   "name": "angular-windowx",
-  "version": "0.0.0",
+  "version": "1.0.0",
+    "description": "Angular WindowX, a simple and easy-to-use Angular window component with powerful functions, supporting theme customization, and built-in multiple awesome themes.",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,6 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
+  "main": "dist/angular-windowx/fesm2015/angular-windowx.js",
   "private": true,
   "dependencies": {
     "@angular/animations": "16.1.2",
