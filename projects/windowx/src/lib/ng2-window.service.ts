@@ -93,15 +93,15 @@ export class Ng2WindowService {
     }
 
     createWrapper() {
-        if(!document.querySelector('.ng-window-wrapper')) {
+        if(!document.querySelector('#ng-window-wrapper')) {
             const wrapper = document.createElement('div');
-            wrapper.className = 'ng-window-wrapper';
+            wrapper.id = 'ng-window-wrapper';
             document.body.appendChild(wrapper);
         }
     }
 
     destroyWrapper() {
-        const wrapper = document.querySelector('.ng-window-wrapper');
+        const wrapper = document.querySelector('#ng-window-wrapper');
         if(wrapper) {
             document.body.removeChild(wrapper);
         }
