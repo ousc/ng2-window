@@ -17,21 +17,65 @@ npm install ng2-window --save
 Import `ng2-window` module in your Angular app:
 
 ```typescript
-import { AngularWindowxModule } from 'ng2-window';
+import { Ng2WindowModule } from 'ng2-window';
 ```
 
-Then add `AngularWindowxModule` to your app's module imports:
+Then add `Ng2WindowModule` to your app's module imports:
 
 ```typescript
 @NgModule({
   imports: [
-    AngularWindowxModule
+      Ng2WindowModule
   ]
 })
 export class AppModule { }
 ```
 
-Once the module is installed, you can use `ax-window` component in your Angular template:
+Once the module is installed, you can use `WindowService` to create window dynamically:
+
+```typescript
+import { Ng2WindowService } from 'ng2-window';
+
+@Component({
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+    constructor(private windowService: Ng2WindowService) { }
+
+    windowManager = {
+        tpl: {
+            visible: false,
+            instance: null,
+        },
+    };
+    
+    openWindow(ref: TemplateRef<any>) {
+        this.windowService.create({
+            title: 'Window 1',
+            icon: '/assets/logo.png',
+            width: 800,
+            height: 500,
+            content: ref,
+            offsetX: 200,
+            offsetY: 100,
+            align: 'leftTop',
+            bodyStyle: {
+                lineHeight: '1.5',
+            },
+        }).then((win: Ng2WindowComponent) => {
+            this.windowManager.tpl.instance = win;
+
+            win.onClose.subscribe(() => {
+                this.windowManager.tpl.visible = false;
+                this.windowManager.tpl.instance = null;
+            });
+        });
+    }
+}
+```
+or use `ng-window` component in your Angular template:
 
 ```html
 <ng-window [title]="'My window'" [icon]="icon" [width]="800" [height]="600" [offsetX]="100" [offsetY]="100" align="leftTop">
