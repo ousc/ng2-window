@@ -1,3 +1,14 @@
+.ng-window-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 999;
+  pointer-events: none;
+}
+
 .ng-window {
   position: fixed;
   background: @window-bg-color;
@@ -285,7 +296,7 @@
   background: 0 0
 }
 
-.ng-windowx-dock {
+.ng-window-dock {
   position: fixed;
   right: 160px;
   bottom: 5px;
@@ -302,7 +313,7 @@
     margin-right: 4px;
   }
 
-  .ng-windowx-dock-item {
+  .ng-window-dock-item {
     height: 40px;
     padding: 0 10px;
     max-width: 200px;

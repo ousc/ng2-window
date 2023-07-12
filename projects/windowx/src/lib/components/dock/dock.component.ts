@@ -1,10 +1,11 @@
-import {Component, TemplateRef} from '@angular/core';
+import {Component} from '@angular/core';
 import {Ng2WindowComponent} from "../../ng2-window.component";
+import {Ng2WindowService} from "../../ng2-window.service";
 @Component({
   selector: 'dock',
   template: `
-      <div class="ng-windowx-dock">
-          <div *ngFor="let dock of docks" class="ng-windowx-dock-item" (click)="restore(dock)">
+      <div class="ng-window-dock">
+          <div *ngFor="let dock of docks" class="ng-window-dock-item" (click)="restore(dock)">
               <ng-container *stringTemplateOutlet="dock.icon">
                   <img class="icon" draggable="false" [src]="dock.icon" alt="icon"/>
               </ng-container>
@@ -15,7 +16,7 @@ import {Ng2WindowComponent} from "../../ng2-window.component";
   `
 })
 export class DockComponent {
-  constructor() {
+  constructor(private ng2WindowService: Ng2WindowService) {
   }
 
   docks: Ng2WindowComponent[] = [];
@@ -23,6 +24,8 @@ export class DockComponent {
   restore(win: Ng2WindowComponent) {
     this.docks = this.docks.filter(dock => dock !== win);
     win.minimize();
+    this.ng2WindowService.selectedWindow = win.windowId;
+    win.zIndex = this.ng2WindowService.maxZIndex++;
   }
 
   close(win: Ng2WindowComponent) {

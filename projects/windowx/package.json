@@ -1,6 +1,6 @@
 {
   "name": "ng2-window",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A simple and easy-to-use Angular window component with powerful functions, supporting theme customization, and built-in multiple awesome themes.",
   "peerDependencies": {
     "@angular/common": "^16.1.0",

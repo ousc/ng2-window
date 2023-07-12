@@ -68,6 +68,7 @@ export class Ng2WindowService {
         }
         if(this.instances.length === 0) {
             this.destroyDock();
+            this.destroyWrapper();
         }
     }
 
@@ -91,8 +92,24 @@ export class Ng2WindowService {
         }
     }
 
+    createWrapper() {
+        if(!document.querySelector('.ng-window-wrapper')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'ng-window-wrapper';
+            document.body.appendChild(wrapper);
+        }
+    }
+
+    destroyWrapper() {
+        const wrapper = document.querySelector('.ng-window-wrapper');
+        if(wrapper) {
+            document.body.removeChild(wrapper);
+        }
+    }
+
     create(options: WindowConfig): Promise<Ng2WindowComponent> {
         this.createDock();
+        this.createWrapper();
         return new Promise(resolve => {
             const componentRef = this.componentFactory.create(this._injector);
             //if the options.left > window.innerWidth, then set left = window.innerWidth - options.width
@@ -114,7 +131,7 @@ export class Ng2WindowService {
             this.selectedWindow = componentRef.instance.windowId;
             componentRef.changeDetectorRef.detectChanges();
             this._appRef.attachView(componentRef.hostView);
-            this._appendToPage(componentRef.location.nativeElement, document.querySelector('#ousc-window-wrapper'));
+            this._appendToPage(componentRef.location.nativeElement, document.querySelector('#ng-window-wrapper'));
             this.instances.push(componentRef);
             componentRef.instance.onClose.subscribe(windowId => {
                 this.dockComponentRef.instance?.close(componentRef.instance);
