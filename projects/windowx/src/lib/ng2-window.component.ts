@@ -9,7 +9,7 @@ import {
     TemplateRef,
     ViewChild
 } from '@angular/core';
-import {WindowConfig, Ng2WindowService} from "./ng2-window.service";
+import {Ng2WindowService, WindowConfig} from "./ng2-window.service";
 import {If, In, when} from "when-case";
 
 interface WindowSize {
@@ -142,7 +142,7 @@ export class Ng2WindowComponent implements AfterViewInit {
 
     windowChange = new EventEmitter<WindowConfig>();
 
-    constructor(private windowxService: Ng2WindowService) {
+    constructor(private windowService: Ng2WindowService) {
     }
 
     async ngOnInit(): Promise<void> {
@@ -343,13 +343,13 @@ export class Ng2WindowComponent implements AfterViewInit {
     }
 
     windowMouseDown(event: MouseEvent) {
-        this.windowxService.selectedWindow = this.windowId;
+        this.windowService.selectedWindow = this.windowId;
         if (!this.draggable || event.button === 2) {
             return;
         }
         this.windowMouseDownFlag = true;
         if (this.windowMouseDownFlag && this.windowMouseEnterFlag) {
-            this.zIndex = this.windowxService.maxZIndex++;
+            this.zIndex = this.windowService.maxZIndex++;
         }
     }
 
@@ -386,6 +386,8 @@ export class Ng2WindowComponent implements AfterViewInit {
         if (this.minimized) {
             this.minimized = false;
             this.display = 'block';
+            this.windowService.dockComponentRef.instance.docks =
+                this.windowService.dockComponentRef.instance.docks.filter(win => win != this);
         } else {
             this.toggleBodyScrollable(true);
 
@@ -393,7 +395,7 @@ export class Ng2WindowComponent implements AfterViewInit {
             setTimeout(() => {
                 this.display = 'none';
             }, 200);
-            this.windowxService.addMinimizeItem(this);
+            this.windowService.addMinimizeItem(this);
         }
         this.onResize.emit(this.windowSize);
     }
@@ -448,7 +450,7 @@ export class Ng2WindowComponent implements AfterViewInit {
     }
 
     get selected() {
-        return this.windowxService.selectedWindow === this.windowId;
+        return this.windowService.selectedWindow === this.windowId;
     }
 
     toggleBodyScrollable(scrollable = true) {
