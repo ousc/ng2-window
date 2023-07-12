@@ -4,6 +4,12 @@ Here is an example `README.md` for `ng2-window`:
 
 `ng2-window` is a powerful Angular window component, supports drag, resize, full screen, minimize, and various comprehensive window functions. It supports creation through declaration and service methods, complete window lifecycle management, and highly customizable styles.
 
+# screenshot
+
+![screenshot](https://github.com/ousc/angular-windowx/tree/main/src/assets/default.png)
+![screenshot](https://github.com/ousc/angular-windowx/tree/main/src/assets/macos.png)
+![screenshot](https://github.com/ousc/angular-windowx/tree/main/src/assets/dark.png)
+
 ## Installation
 
 To install `ng2-window`, simply run:
