@@ -134,7 +134,7 @@ export class Ng2WindowService {
             this._appendToPage(componentRef.location.nativeElement, document.querySelector('#ng-window-wrapper'));
             this.instances.push(componentRef);
             componentRef.instance.onClose.subscribe(windowId => {
-                this.dockComponentRef.instance?.close(componentRef.instance);
+                this.dockComponentRef.instance.docks = this.dockComponentRef.instance.docks.filter(win => win !== componentRef.instance);
                 this.destroy(windowId);
                 if (this.selectedWindow === windowId) {
                     this.selectedWindow = null;

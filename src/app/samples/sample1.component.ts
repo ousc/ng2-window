@@ -6,6 +6,7 @@ import {Ng2WindowService} from "../../../projects/windowx/src/lib/ng2-window.ser
   selector: 'sample1-component',
   template: `
     <div class="body">
+      <button (click)="openWindow()">open window</button>
       <ng-template #tpl>
         this is window x
       </ng-template>
@@ -20,12 +21,37 @@ import {Ng2WindowService} from "../../../projects/windowx/src/lib/ng2-window.ser
   `],
 })
 export class Sample1Component implements OnInit {
-  constructor(private _window: Ng2WindowService) {}
+  constructor(private _window: Ng2WindowService) {
+  }
 
   @ViewChild('tpl', {static: true}) tpl: TemplateRef<any>;
 
   windowManager: any = {
     tpl: {}
+  }
+  count = 3;
+
+  openWindow() {
+    this._window.create({
+      title: 'Window ' + this.count++,
+      icon: '/assets/logo.png',
+      width: 800,
+      height: 500,
+      content: this.tpl,
+      offsetX: 200,
+      offsetY: 100,
+      align: 'leftTop',
+      bodyStyle: {
+        lineHeight: '1.5',
+      },
+    }).then((win: Ng2WindowComponent) => {
+      this.windowManager.tpl.instance = win;
+
+      win.onClose.subscribe(() => {
+        this.windowManager.tpl.visible = false;
+        this.windowManager.tpl.instance = null;
+      });
+    });
   }
 
   ngOnInit(): void {

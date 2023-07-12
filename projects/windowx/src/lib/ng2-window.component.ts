@@ -5,12 +5,13 @@ import {
     EventEmitter,
     HostListener,
     Input,
+    OnInit,
     Output,
     TemplateRef,
     ViewChild
 } from '@angular/core';
 import {Ng2WindowService, WindowConfig} from "./ng2-window.service";
-import {If, In, when} from "when-case";
+import {In, when} from "when-case";
 
 interface WindowSize {
     offsetY: number;
@@ -24,7 +25,7 @@ interface WindowSize {
     selector: 'ng-window',
     templateUrl: 'ng2-window.component.html'
 })
-export class Ng2WindowComponent implements AfterViewInit {
+export class Ng2WindowComponent implements OnInit, AfterViewInit {
     windowId = 'window' + Math.floor(Math.random() * 1000000);
 
     @Input() width: number = 600;
@@ -74,17 +75,17 @@ export class Ng2WindowComponent implements AfterViewInit {
 
     updateOffsetX(offsetX) {
         this.offsetX = offsetX;
-        if (this.align.includes('Left')) {
-            this.position = {
-                ...this.position,
-                left: null,
-                right: offsetX + 'px'
-            }
-        } else {
+        if (this.align.includes('left')) {
             this.position = {
                 ...this.position,
                 left: offsetX + 'px',
                 right: null
+            }
+        } else {
+            this.position = {
+                ...this.position,
+                left: null,
+                right: offsetX + 'px'
             }
         }
     }
@@ -159,11 +160,7 @@ export class Ng2WindowComponent implements AfterViewInit {
     }
 
     get left() {
-        return If<number>(this.align === 'leftTop' || this.align === 'leftBottom')(
-            this.offsetX
-        ).else(
-            window.innerWidth - this.width - this.offsetX
-        )
+        return (this.align === 'leftTop' || this.align === 'leftBottom' ? this.offsetX : window.innerWidth - this.width - this.offsetX);
     }
 
     get right() {
