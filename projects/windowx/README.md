@@ -6,9 +6,9 @@ Here is an example `README.md` for `ng2-window`:
 
 # screenshot
 
-![screenshot](https://github.com/ousc/angular-windowx/tree/main/src/assets/default.png)
-![screenshot](https://github.com/ousc/angular-windowx/tree/main/src/assets/macos.png)
-![screenshot](https://github.com/ousc/angular-windowx/tree/main/src/assets/dark.png)
+![screenshot](https://github.com/ousc/angular-windowx/blob/main/src/assets/default.png?raw=true)
+![screenshot](https://github.com/ousc/angular-windowx/blob/main/src/assets/macos.png?raw=true)
+![screenshot](https://github.com/ousc/angular-windowx/blob/main/src/assets/dark.png?raw=true)
 
 ## Installation
 
