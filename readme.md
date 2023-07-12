@@ -1,23 +1,23 @@
-Here is an example `README.md` for `angular-windowx`:
+Here is an example `README.md` for `ng2-window`:
 
-# Angular-Windowx
+# ng2-window
 
-`angular-windowx` is a powerful Angular window component, supports drag, resize, full screen, minimize, and various comprehensive window functions. It supports creation through declaration and service methods, complete window lifecycle management, and highly customizable styles.
+`ng2-window` is a powerful Angular window component, supports drag, resize, full screen, minimize, and various comprehensive window functions. It supports creation through declaration and service methods, complete window lifecycle management, and highly customizable styles.
 
 ## Installation
 
-To install `angular-windowx`, simply run:
+To install `ng2-window`, simply run:
 
 ```bash
-npm install angular-windowx --save
+npm install ng2-window --save
 ```
 
 ## Usage
 
-Import `angular-windowx` module in your Angular app:
+Import `ng2-window` module in your Angular app:
 
 ```typescript
-import { AngularWindowxModule } from 'angular-windowx';
+import { AngularWindowxModule } from 'ng2-window';
 ```
 
 Then add `AngularWindowxModule` to your app's module imports:
@@ -34,14 +34,17 @@ export class AppModule { }
 Once the module is installed, you can use `ax-window` component in your Angular template:
 
 ```html
-<ax-window title="My window" [resizable]="true" [draggable]="true">
+<ng-window [title]="'My window'" [icon]="icon" [width]="800" [height]="600" [offsetX]="100" [offsetY]="100" align="leftTop">
+    <ng-template #icon>
+        <i class="fa fa-app"></i>
+    </ng-template>
   <!-- Window content here -->
-</ax-window>
+</ng-window>
 ```
 
 ## Features
 
-`angular-windowx` supports the following features:
+`ng2-window` supports the following features:
 
 - Dragging window to move
 - Resizing window to fit content
@@ -92,4 +95,4 @@ To run the demo application:
 
 ## Contribution
 
-We welcome community contributions and pull requests. To contribute to `angular-windowx`, please fork the repository and open a pull request.
+We welcome community contributions and pull requests. To contribute to `ng2-window`, please fork the repository and open a pull request.

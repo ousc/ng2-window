@@ -2,9 +2,9 @@
  * Public API Surface of windowx
  */
 
-export * from './lib/windowx.component';
-export * from './lib/windowx.module';
-export * from './lib/windowx.service';
+export * from './lib/ng2-window.component';
+export * from './lib/ng2-window.module';
+export * from './lib/ng2-window.service';
 export * from './lib/components/icon/close.icon';
 export * from './lib/components/icon/maximize.icon';
 export * from './lib/components/icon/minimize.icon';

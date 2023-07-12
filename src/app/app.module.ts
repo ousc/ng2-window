@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {CommonModule} from "@angular/common";
-import {WindowxModule} from "../../projects/windowx/src/lib/windowx.module";
+import {Ng2WindowModule} from "../../projects/windowx/src/lib/ng2-window.module";
 import {Sample1Component} from "./samples/sample1.component";
 
 @NgModule({
@@ -14,7 +14,7 @@ import {Sample1Component} from "./samples/sample1.component";
     imports: [
         BrowserModule,
         CommonModule,
-        WindowxModule
+        Ng2WindowModule
     ],
     bootstrap: [AppComponent]
 })

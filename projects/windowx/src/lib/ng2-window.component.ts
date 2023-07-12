@@ -9,7 +9,7 @@ import {
     TemplateRef,
     ViewChild
 } from '@angular/core';
-import {WindowConfig, WindowxService} from "./windowx.service";
+import {WindowConfig, Ng2WindowService} from "./ng2-window.service";
 import {If, In, when} from "when-case";
 
 interface WindowSize {
@@ -21,10 +21,10 @@ interface WindowSize {
 }
 
 @Component({
-    selector: 'ng-windowx',
-    templateUrl: 'windowx.component.html'
+    selector: 'ng-window',
+    templateUrl: 'ng2-window.component.html'
 })
-export class WindowxComponent implements AfterViewInit {
+export class Ng2WindowComponent implements AfterViewInit {
     windowId = 'window' + Math.floor(Math.random() * 1000000);
 
     @Input() width: number = 600;
@@ -142,7 +142,7 @@ export class WindowxComponent implements AfterViewInit {
 
     windowChange = new EventEmitter<WindowConfig>();
 
-    constructor(private windowxService: WindowxService) {
+    constructor(private windowxService: Ng2WindowService) {
     }
 
     async ngOnInit(): Promise<void> {

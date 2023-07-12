@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {WindowxComponent} from './windowx.component';
+import {Ng2WindowComponent} from './ng2-window.component';
 import {CloseIcon} from "./components/icon/close.icon";
 import {MaximizeIcon} from "./components/icon/maximize.icon";
 import {MinimizeIcon} from "./components/icon/minimize.icon";
@@ -13,7 +13,7 @@ import {DockComponent} from "./components/dock/dock.component";
 
 @NgModule({
     declarations: [
-        WindowxComponent,
+        Ng2WindowComponent,
         CloseIcon,
         MaximizeIcon,
         MinimizeIcon,
@@ -28,7 +28,7 @@ import {DockComponent} from "./components/dock/dock.component";
         NgOptimizedImage
     ],
     exports: [
-        WindowxComponent,
+        Ng2WindowComponent,
         CloseIcon,
         MaximizeIcon,
         MinimizeIcon,
@@ -37,5 +37,5 @@ import {DockComponent} from "./components/dock/dock.component";
         DockComponent
     ]
 })
-export class WindowxModule {
+export class Ng2WindowModule {
 }

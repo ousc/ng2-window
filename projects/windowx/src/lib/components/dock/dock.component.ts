@@ -1,5 +1,5 @@
 import {Component, TemplateRef} from '@angular/core';
-import {WindowxComponent} from "../../windowx.component";
+import {Ng2WindowComponent} from "../../ng2-window.component";
 @Component({
   selector: 'dock',
   template: `
@@ -18,14 +18,14 @@ export class DockComponent {
   constructor() {
   }
 
-  docks: WindowxComponent[] = [];
+  docks: Ng2WindowComponent[] = [];
 
-  restore(win: WindowxComponent) {
+  restore(win: Ng2WindowComponent) {
     this.docks = this.docks.filter(dock => dock !== win);
     win.minimize();
   }
 
-  close(win: WindowxComponent) {
+  close(win: Ng2WindowComponent) {
     this.docks = this.docks.filter(dock => dock !== win);
     win.close();
   }

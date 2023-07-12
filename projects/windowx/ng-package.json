@@ -3,5 +3,9 @@
   "dest": "../../dist/windowx",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "assets": [
+    "styles/*.less",
+    "styles/theme/*.less"
+  ]
 }

@@ -9,7 +9,7 @@ import {
 import {NavigationStart, Router} from '@angular/router';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {WindowxComponent} from "./windowx.component";
+import {Ng2WindowComponent} from "./ng2-window.component";
 import {DockComponent} from "./components/dock/dock.component";
 
 export interface WindowConfig {
@@ -33,14 +33,8 @@ export interface WindowConfig {
     closable?: boolean;
 }
 
-function updateStyles(styles: any, dom: HTMLElement) {
-    for (const styleName in styles) {
-        dom.style[styleName] = styles[styleName];
-    }
-}
-
 @Injectable({providedIn: 'root'})
-export class WindowxService {
+export class Ng2WindowService {
     private unsubscribe$ = new Subject<void>();
 
     constructor(private _appRef: ApplicationRef,
@@ -59,10 +53,9 @@ export class WindowxService {
     }
 
     maxZIndex: number = 0;
-    componentFactory = this._cfr.resolveComponentFactory(WindowxComponent);
-    instances: ComponentRef<WindowxComponent>[] = [];
+    componentFactory = this._cfr.resolveComponentFactory(Ng2WindowComponent);
+    instances: ComponentRef<Ng2WindowComponent>[] = [];
     selectedWindow = null;
-    minimizeItems = {};
     dockComponentRef: ComponentRef<DockComponent> = null;
 
     destroy(windowId: string) {
@@ -78,7 +71,7 @@ export class WindowxService {
         }
     }
 
-    addMinimizeItem(windowComponent: WindowxComponent) {
+    addMinimizeItem(windowComponent: Ng2WindowComponent) {
         this.dockComponentRef.instance.docks.push(windowComponent);
     }
 
@@ -98,7 +91,7 @@ export class WindowxService {
         }
     }
 
-    create(options: WindowConfig): Promise<WindowxComponent> {
+    create(options: WindowConfig): Promise<Ng2WindowComponent> {
         this.createDock();
         return new Promise(resolve => {
             const componentRef = this.componentFactory.create(this._injector);
@@ -124,11 +117,8 @@ export class WindowxService {
             this._appendToPage(componentRef.location.nativeElement, document.querySelector('#ousc-window-wrapper'));
             this.instances.push(componentRef);
             componentRef.instance.onClose.subscribe(windowId => {
+                this.dockComponentRef.instance?.close(componentRef.instance);
                 this.destroy(windowId);
-                if (this.minimizeItems[windowId]) {
-                    document.getElementById('ousc-window-minimize-wrapper')?.removeChild(this.minimizeItems[windowId]);
-                }
-                this.minimizeItems[windowId] = null;
                 if (this.selectedWindow === windowId) {
                     this.selectedWindow = null;
                 }

@@ -1,6 +1,6 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {WindowxComponent} from "../../../projects/windowx/src/lib/windowx.component";
-import {WindowxService} from "../../../projects/windowx/src/lib/windowx.service";
+import {Ng2WindowComponent} from "../../../projects/windowx/src/lib/ng2-window.component";
+import {Ng2WindowService} from "../../../projects/windowx/src/lib/ng2-window.service";
 
 @Component({
   selector: 'sample1-component',
@@ -20,7 +20,7 @@ import {WindowxService} from "../../../projects/windowx/src/lib/windowx.service"
   `],
 })
 export class Sample1Component implements OnInit {
-  constructor(private windowxService: WindowxService) {}
+  constructor(private _window: Ng2WindowService) {}
 
   @ViewChild('tpl', {static: true}) tpl: TemplateRef<any>;
 
@@ -29,7 +29,7 @@ export class Sample1Component implements OnInit {
   }
 
   ngOnInit(): void {
-    this.windowxService.create({
+    this._window.create({
       title: 'Window 1',
       icon: '/assets/logo.png',
       width: 800,
@@ -41,7 +41,7 @@ export class Sample1Component implements OnInit {
       bodyStyle: {
         lineHeight: '1.5',
       },
-    }).then((win: WindowxComponent) => {
+    }).then((win: Ng2WindowComponent) => {
       this.windowManager.tpl.instance = win;
 
       win.onClose.subscribe(() => {
@@ -49,7 +49,7 @@ export class Sample1Component implements OnInit {
         this.windowManager.tpl.instance = null;
       });
     });
-    this.windowxService.create({
+    this._window.create({
       title: 'Window 2',
       icon: '/assets/logo.png',
       width: 300,
@@ -62,7 +62,7 @@ export class Sample1Component implements OnInit {
       bodyStyle: {
         lineHeight: '1.5',
       },
-    }).then((win: WindowxComponent) => {
+    }).then((win: Ng2WindowComponent) => {
       this.windowManager.tpl.instance = win;
 
       win.onClose.subscribe(() => {
