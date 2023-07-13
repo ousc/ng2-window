@@ -205,6 +205,8 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
 
         if (this.windowMouseDownFlag) {
             this.resizeWindow(event);
+        } else {
+            this.onMove.emit({...this});
         }
 
         let x = event.clientX;
@@ -350,6 +352,7 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
             return;
         }
         this.windowMouseDownFlag = true;
+        this.onSelected.emit(this.windowId);
         if (this.windowMouseDownFlag && this.windowMouseEnterFlag) {
             this.zIndex = this.windowService.maxZIndex++;
         }
@@ -369,6 +372,8 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
     @Output('onMaximizeRestore') onMaximizeRestore = new EventEmitter<WindowSize>();
     @Output('onMinimize') onMinimize = new EventEmitter<WindowSize>();
     @Output('onMinimizeRestore') onMinimizeRestore = new EventEmitter<WindowSize>();
+    @Output('onSelected') onSelected = new EventEmitter<string>();
+    @Output('onMove') onMove = new EventEmitter<WindowSize>();
 
     close() {
         if (this.closable) {
