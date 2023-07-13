@@ -365,6 +365,10 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
 
     @Output('onClose') onClose = new EventEmitter<string>();
     @Output('onResize') onResize = new EventEmitter<WindowSize>();
+    @Output('onMaximize') onMaximize = new EventEmitter<WindowSize>();
+    @Output('onMaximizeRestore') onMaximizeRestore = new EventEmitter<WindowSize>();
+    @Output('onMinimize') onMinimize = new EventEmitter<WindowSize>();
+    @Output('onMinimizeRestore') onMinimizeRestore = new EventEmitter<WindowSize>();
 
     close() {
         if (this.closable) {
@@ -390,6 +394,7 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
             this.display = 'block';
             this.windowService.dockComponentRef.instance.docks =
                 this.windowService.dockComponentRef.instance.docks.filter(win => win != this);
+            this.onMinimizeRestore.emit(this.windowSize);
         } else {
             this.toggleBodyScrollable(true);
 
@@ -398,6 +403,7 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
                 this.display = 'none';
             }, 200);
             this.windowService.addMinimizeItem(this);
+            this.onMinimize.emit(this.windowSize);
         }
         this.onResize.emit(this.windowSize);
     }
@@ -415,6 +421,7 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
                 this.updateOffsetY(offsetY);
                 this.draggable = true;
                 this.onResize.emit(this.windowSize);
+                this.onMaximizeRestore.emit(this.windowSize);
                 resolve(true);
             } else {
                 this.toggleBodyScrollable(false);
@@ -433,6 +440,7 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
                     this.width = window.innerWidth;
                     this.draggable = false;
                     this.onResize.emit(this.windowSize);
+                    this.onMaximize.emit(this.windowSize);
                     resolve(true);
                 }, 200);
             }
