@@ -110,30 +110,42 @@ or use `ng-window` component in your Angular template:
 
 #### Inputs
 
-- `title` (string): Window title
-- `resizable` (boolean): Whether the window can be resized (default: false)
-- `draggable` (boolean): Whether the window can be dragged (default: false)
-- `showHeader` (boolean): Whether to show window header (default: true)
-- `showFooter` (boolean): Whether to show window footer (default: true)
-- `showMinimizeButton` (boolean): Whether to show minimize button (default: true)
-- `showMaximizeButton` (boolean): Whether to show maximize button (default: true)
-- `showCloseButton` (boolean): Whether to show close button (default: true)
-- `showFullScreenButton` (boolean): Whether to show full screen button (default: true)
-- `modal` (boolean): Whether the window is modal (default: false)
-- `width` (number|string): Optional window width (default: 'auto')
-- `height` (number|string): Optional window height (default: 'auto')
-- `left` (number|string): Optional window left position (default: 'auto')
-- `top` (number|string): Optional window top position (default: 'auto')
-- `isOpen` (boolean): Whether the window is open (default: true)
+- `title` (string/TemplateRef): Window title, can be a string or a template
+- `icon` (string/TemplateRef): Window icon, can be a string or a template
+- `align` ('leftTop'/'rightTop'/'leftBottom'/'rightBottom'): Window align
+- `width` (number): Window width
+- `height` (number): Window height
+- `minWidth` (number): Window minimum width
+- `minHeight` (number): Window minimum height
+- `offsetX` (number): Window offset x, when align is 'leftTop' or 'leftBottom', offsetX is the distance from the left side of the screen, when align is 'rightTop' or 'rightBottom', offsetX is the distance from the right side of the screen
+- `offsetY` (number): Window offset y, when align is 'leftTop' or 'rightTop', offsetY is the distance from the top of the screen, when align is 'leftBottom' or 'rightBottom', offsetY is the distance from the bottom of the screen
+- `closable` (boolean): Whether the window can be closed
+- `maximizable` (boolean): Whether the window can be maximized
+- `minimizable` (boolean): Whether the window can be minimized
+- `draggable` (boolean): Whether the window can be dragged
+- `resizable` (boolean): Whether the window can be resized
+- `loading` (boolean): Whether the window is loading
+- `loadingTip` (string/TemplateRef): Window loading tip, can be a string or a template
+- `content` (string/TemplateRef): Window content, can be a string or a template
+- `contentScrollable` (boolean): Whether the window content is scrollable
+- `theme` ('light'/'dark'): Window theme, default is 'light'
+- `zIndex` (`number): Window z-index
+- `bodyStyle` (object): Window body style
+- `closeOnNavigation` (boolean): Whether to close the window when the route changes
+- `language` ('en'/'zh'): Window language, default is 'zh', set in `WindowService`
+- `dockTheme` ('light'/'dark'): Window dock theme, default is 'light', set in `WindowService`
 
 #### Outputs
 
-- `onOpen`: Emitted when the window is opened
+- `onReady`: Emitted when the window is ready
 - `onClose`: Emitted when the window is closed
-- `onMinimize`: Emitted when the window is minimized
+- `onResize`: Emitted when the window is resized
 - `onMaximize`: Emitted when the window is maximized
-- `onRestore`: Emitted when the window is restored
-- `onFullScreen`: Emitted when the window enters or exits full screen mode
+- `onMaximizeRestore`: Emitted when the window is restored
+- `onMinimize`: Emitted when the window is minimized
+- `onMinimizeRestore`: Emitted when the window is restored
+- `onSelected`: Emitted when the window is selected
+- `onMove`: Emitted when the window is moved
 
 ## Development
 

@@ -10,7 +10,7 @@ import {
     TemplateRef,
     ViewChild
 } from '@angular/core';
-import {Ng2WindowService, WindowConfig} from "./ng2-window.service";
+import {Ng2WindowService} from "./ng2-window.service";
 import {In, when} from "when-case";
 
 interface WindowSize {
@@ -27,7 +27,17 @@ interface WindowSize {
 })
 export class Ng2WindowComponent implements OnInit, AfterViewInit {
     windowId = 'window' + Math.floor(Math.random() * 1000000);
+    titleHeight = 0;
 
+    @Input() title: string | TemplateRef<any> = 'Window Name';
+    @Input() icon: string | TemplateRef<any> | null = null;
+    @Input() align: 'leftTop' | 'rightTop' | 'leftBottom' | 'rightBottom' = 'leftTop';
+    @Input() bodyStyle: any = {};
+    @Input() zIndex = 0;
+
+    @Input() closeOnNavigation = false; //是否在页面路由变化时关闭窗口
+    @Input() closable = true; //是否允许关闭窗口
+    @Input() content: TemplateRef<any> | string;
     @Input() width: number = 600;
     @Input() height: number = 400;
     @Input() minWidth: number = 175;
@@ -36,13 +46,20 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
     @Input() offsetX: number = 200;
     @Input() loading = true; // is loading
     @Input() theme: 'light' | 'dark' = 'light';
+    @Input() maximizable = true;
+    @Input() minimizable = true;
+    @Input() resizable = true;
+    @Input() draggable = true;
 
     get themeSuffix() {
         return this.theme === 'dark' ? '-dark' : '';
     }
 
-    @Input() language: 'zh' | 'en' = 'zh';
-    loadingTip: string | TemplateRef<any> = this.getLocaleText('loading');
+    get language() {
+        return this.windowService.language;
+    }
+
+    @Input() loadingTip: string | TemplateRef<any> = this.getLocaleText('loading');
 
     getLocaleText(text: 'loading' | 'close' | 'maximize' | 'minimize' | 'windowMode') {
         const dictionary = {
@@ -64,7 +81,7 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
         return dictionary[this.language][text];
     }
 
-    contentScrollable: boolean = false;
+    @Input() contentScrollable: boolean = false;
 
     get windowSize(): WindowSize {
         return {
@@ -112,18 +129,6 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
         }
     }
 
-    @Input() align: 'leftTop' | 'rightTop' | 'leftBottom' | 'rightBottom' = 'leftTop';
-
-    @Input() title: string | TemplateRef<any> = 'Window Name';
-    titleHeight = 0;
-    @Input() bodyStyle: any = {};
-    @Input() zIndex = 0;
-    @Input() icon: string | TemplateRef<any> | null = null;
-    content: TemplateRef<any> | string;
-
-    @Input() closeOnNavigation = false; //是否在页面路由变化时关闭窗口
-    @Input() closable = true; //是否允许关闭窗口
-
     dragging = false;
     windowMouseEnterFlag = false;
     windowMouseDownFlag = false;
@@ -146,8 +151,6 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
     isTopBorder: boolean;
     isBottomBorder: boolean;
 
-    windowChange = new EventEmitter<WindowConfig>();
-
     constructor(private windowService: Ng2WindowService) {
     }
 
@@ -162,6 +165,7 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
             this.display = 'block';
             this.loading = false;
         }
+        this.onReady.emit(this);
     }
 
     get left() {
@@ -203,7 +207,7 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
             );
         }
 
-        if (this.windowMouseDownFlag) {
+        if (this.windowMouseDownFlag && this.resizable) {
             this.resizeWindow(event);
         } else {
             this.onMove.emit({...this});
@@ -221,51 +225,52 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
         let bottomBorderY = Math.abs(this.top + this.height - y) <= this.borderWidth;
         let topBottomBorderX = x > this.left && x < this.left + this.width;
 
-        if (leftBorderX && bottomBorderY) {
-            this.cursorStyle = 'sw-resize';
-            this.isLeftBorder = true;
-            this.isBottomBorder = true;
-            this.contentScrollable = true;
-        } else if (rightBorderX && bottomBorderY) {
-            this.cursorStyle = 'se-resize';
-            this.isRightBorder = true;
-            this.isBottomBorder = true;
-            this.contentScrollable = true;
-        } else if (leftBorderX && topBorderY) {
-            this.cursorStyle = 'nw-resize';
-            this.isLeftBorder = true;
-            this.isTopBorder = true;
-            this.contentScrollable = true;
-        } else if (rightBorderX && topBorderY) {
-            this.cursorStyle = 'ne-resize';
-            this.isTopBorder = true;
-            this.isRightBorder = true;
-            this.contentScrollable = true;
-        } else if (leftBorderX && rightLeftBorderY) {
-            this.cursorStyle = 'w-resize';
-            this.isLeftBorder = true;
-            this.contentScrollable = true;
-        } else if (rightBorderX && rightLeftBorderY) {
-            this.cursorStyle = 'e-resize';
-            this.isRightBorder = true;
-            this.contentScrollable = true;
-        } else if (topBorderY && topBottomBorderX) {
-            this.cursorStyle = 'n-resize';
-            this.isTopBorder = true;
-            this.contentScrollable = true;
-        } else if (bottomBorderY && topBottomBorderX) {
-            this.cursorStyle = 's-resize';
-            this.isBottomBorder = true;
-            this.contentScrollable = true;
-        } else {
-            this.isLeftBorder = false;
-            this.isRightBorder = false;
-            this.isTopBorder = false;
-            this.isBottomBorder = false;
-            this.cursorStyle = 'auto';
-            this.contentScrollable = false;
+        if (this.resizable) {
+            if (leftBorderX && bottomBorderY) {
+                this.cursorStyle = 'sw-resize';
+                this.isLeftBorder = true;
+                this.isBottomBorder = true;
+                this.contentScrollable = true;
+            } else if (rightBorderX && bottomBorderY) {
+                this.cursorStyle = 'se-resize';
+                this.isRightBorder = true;
+                this.isBottomBorder = true;
+                this.contentScrollable = true;
+            } else if (leftBorderX && topBorderY) {
+                this.cursorStyle = 'nw-resize';
+                this.isLeftBorder = true;
+                this.isTopBorder = true;
+                this.contentScrollable = true;
+            } else if (rightBorderX && topBorderY) {
+                this.cursorStyle = 'ne-resize';
+                this.isTopBorder = true;
+                this.isRightBorder = true;
+                this.contentScrollable = true;
+            } else if (leftBorderX && rightLeftBorderY) {
+                this.cursorStyle = 'w-resize';
+                this.isLeftBorder = true;
+                this.contentScrollable = true;
+            } else if (rightBorderX && rightLeftBorderY) {
+                this.cursorStyle = 'e-resize';
+                this.isRightBorder = true;
+                this.contentScrollable = true;
+            } else if (topBorderY && topBottomBorderX) {
+                this.cursorStyle = 'n-resize';
+                this.isTopBorder = true;
+                this.contentScrollable = true;
+            } else if (bottomBorderY && topBottomBorderX) {
+                this.cursorStyle = 's-resize';
+                this.isBottomBorder = true;
+                this.contentScrollable = true;
+            } else {
+                this.isLeftBorder = false;
+                this.isRightBorder = false;
+                this.isTopBorder = false;
+                this.isBottomBorder = false;
+                this.cursorStyle = 'auto';
+                this.contentScrollable = false;
+            }
         }
-        this.windowChange.emit({...this});
     }
 
     resizeWindow(event: MouseEvent) {
@@ -319,7 +324,6 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
         if (this.width < this.minWidth) {
             this.width = this.minWidth;
         }
-        this.windowChange.emit({...this});
         this.onResize.emit(this.windowSize);
     }
 
@@ -366,6 +370,7 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
         this.windowMouseEnterFlag = false;
     }
 
+    @Output('onReady') onReady = new EventEmitter<Ng2WindowComponent>();
     @Output('onClose') onClose = new EventEmitter<string>();
     @Output('onResize') onResize = new EventEmitter<WindowSize>();
     @Output('onMaximize') onMaximize = new EventEmitter<WindowSize>();
@@ -389,8 +394,6 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
     maximized = false;
 
     propertyBeforeMaximize: WindowSize = null;
-
-    draggable = true;
 
     minimize() {
         window.onresize = null;

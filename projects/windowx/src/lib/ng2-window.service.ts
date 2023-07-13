@@ -24,11 +24,11 @@ export interface WindowConfig {
     offsetX?: number;
     zIndex?: number;
     titleStyle?: any;
-    language?: 'zh' | 'en';
     bodyStyle?: any;
     maximized?: boolean;
     icon?: TemplateRef<any> | string | null;
     draggable?: boolean;
+    resizable?: boolean;
     closeOnNavigation?: boolean;
     closable?: boolean;
     theme?: 'light' | 'dark';
@@ -54,6 +54,7 @@ export class Ng2WindowService {
     }
 
     dockTheme: 'light' | 'dark' = 'light';
+    language: 'zh' | 'en' = 'zh';
 
     maxZIndex: number = 0;
     componentFactory = this._cfr.resolveComponentFactory(Ng2WindowComponent);
