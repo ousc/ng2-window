@@ -1,4 +1,4 @@
-<div class="ng-window-back-drop"
+<div [class]="'ng-window-back-drop' + themeSuffix"
      [hidden]="loading"
      [ngStyle]="position"
      [style.width.px]='width'
@@ -7,7 +7,7 @@
      [style.z-index]='zIndex'
      [style.display]='display'
 ></div>
-<div class="ng-window"
+<div [class]="'ng-window' + themeSuffix"
      [hidden]="loading"
      [ngClass]="{'selected': selected, 'minimized': minimized, 'maximized': maximized}"
      [ngStyle]="position"
@@ -46,7 +46,7 @@
 </div>
 
 <ng-container *stringTemplateOutlet="loadingTip">
-    <div class="window-loading" [ngStyle]="position" *ngIf="loading">
+    <div [class]="'window-loading' + themeSuffix" [ngStyle]="position" *ngIf="loading">
         <div>
             <loading-icon/>
         </div>

@@ -32,6 +32,7 @@ export class Sample1Component implements OnInit {
   count = 3;
 
   openWindow() {
+    this._window.dockTheme = 'dark';
     this._window.create({
       title: 'Window ' + this.count++,
       icon: '/assets/logo.png',
@@ -41,6 +42,7 @@ export class Sample1Component implements OnInit {
       offsetX: 200,
       offsetY: 100,
       align: 'leftTop',
+      theme: 'dark',
       bodyStyle: {
         lineHeight: '1.5',
       },

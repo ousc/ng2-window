@@ -31,6 +31,7 @@ export interface WindowConfig {
     draggable?: boolean;
     closeOnNavigation?: boolean;
     closable?: boolean;
+    theme?: 'light' | 'dark';
 }
 
 @Injectable({providedIn: 'root'})
@@ -51,6 +52,8 @@ export class Ng2WindowService {
             }
         });
     }
+
+    dockTheme: 'light' | 'dark' = 'light';
 
     maxZIndex: number = 0;
     componentFactory = this._cfr.resolveComponentFactory(Ng2WindowComponent);

@@ -1,82 +1,4 @@
-#ng-window-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 999;
-  pointer-events: none;
-}
-
-@keyframes popup {
-  0% {
-    transform: scale(.8)
-  }
-  to {
-    transform: scale(1)
-  }
-}
-
-@keyframes magical-scale {
-  to {
-    top: 100vh;
-    left: 100vw;
-    width: 0;
-    height: 0;
-    opacity: 0;
-    transform: translateZ(-1000px) skewX(-10deg) scaleX(0.2) scaleY(0.1);
-  }
-}
-
-@keyframes maximize {
-  0% {
-    transform: scale(1)
-  }
-  to {
-    width: 100vw;
-    background: #FFF;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    transform: scale(1);
-  }
-}
-
-
-:host .no-scroll ::-webkit-scrollbar {
-  width: 9px;
-  height: 7px;
-  pointer-events: none;
-}
-
-:host ::-webkit-scrollbar {
-  width: 9px;
-  height: 7px
-}
-
-:host ::-webkit-scrollbar-track {
-  background: 0 0
-}
-
-:host ::-webkit-scrollbar-thumb {
-  border-radius: 5px;
-  background: rgba(155, 155, 155, 0.8);
-}
-
-:host ::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 99, 99);
-}
-
-:host ::-webkit-scrollbar-thumb:window-inactive {
-  background: rgba(155, 155, 155, 0.8);
-}
-
-:host ::-webkit-scrollbar-corner {
-  background: 0 0
-}
-
-.ng-window-dock {
+.ng-window-dock-dark {
   position: fixed;
   right: 160px;
   bottom: 5px;
@@ -100,8 +22,8 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    background: @window-title-bar-bg-color;
-    color: @window-title-bar-color;
+    background: @window-title-bar-bg-color-dark;
+    color: @window-title-bar-color-dark;
     border-radius: 4px;
     margin-right: 5px;
     display: flex;
@@ -117,11 +39,11 @@
   }
 }
 
-.ng-window {
+.ng-window-dark {
   position: fixed;
-  background: @window-bg-color;
+  background: @window-bg-color-dark;
   border-radius: @window-border-radius;
-  box-shadow: @window-box-shadow;
+  box-shadow: @window-box-shadow-dark;
   pointer-events: auto;
   margin: 0;
   padding: 0;
@@ -156,13 +78,13 @@
     left: @body-drag-area-width;
     top: @body-drag-area-width;
     font-family: @window-title-bar-font-family;
-    color: @window-title-bar-color;
+    color: @window-title-bar-color-dark;
     border-radius: @window-title-bar-radius;
-    background: @window-title-bar-bg-color;
+    background: @window-title-bar-bg-color-dark;
     height: @window-title-bar-height;
     line-height: @window-title-bar-height;
     width: calc(100% - @window-title-bar-offset * 2);
-    border-color: @window-title-bar-border-color;
+    border-color: @window-title-bar-border-color-dark;
     border-width: @window-title-bar-border-width;
     position: absolute;
     border-style: solid;
@@ -183,7 +105,7 @@
         border-radius: 7px;
         margin: 4px;
         text-align: center;
-        background-color: @win-icon-bg-color;
+        background-color: @win-icon-bg-color-dark;
         border: @win-icon-border;
         cursor: pointer;
 
@@ -228,23 +150,23 @@
       }
 
       close-icon:hover {
-        background: @close-icon-bg-color-hover;
-        border: @close-icon-border-hover;
+        background: @close-icon-bg-color-hover-dark;
+        border: @close-icon-border-hover-dark;
       }
 
       minimize-icon:hover {
-        background: @minimize-icon-bg-color-hover;
-        border: @minimize-icon-border-hover;
+        background: @minimize-icon-bg-color-hover-dark;
+        border: @minimize-icon-border-hover-dark;
       }
 
       maximize-icon:hover {
-        background: @maximize-icon-bg-color-hover;
-        border: @maximize-icon-border-hover;
+        background: @maximize-icon-bg-color-hover-dark;
+        border: @maximize-icon-border-hover-dark;
       }
 
       maximized-icon:hover {
-        background: @maximized-icon-bg-color-hover;
-        border: @maximized-icon-border-hover;
+        background: @maximized-icon-bg-color-hover-dark;
+        border: @maximized-icon-border-hover-dark;
       }
     }
 
@@ -270,8 +192,8 @@
   }
 
   .body {
-    background: @window-body-bg-color;
-    color: @window-body-color;
+    background: @window-body-bg-color-dark;
+    color: @window-body-color-dark;
     left: @window-body-offset-x;
     width: calc(100% - @window-body-offset-x * 2);
     height: calc(100% - @window-body-offset-y * 2 - @window-title-bar-height - @window-title-bar-offset);
@@ -285,31 +207,31 @@
     box-shadow: @selected-window-box-shadow;
 
     .win-title-bar {
-      background-color: @selected-window-title-bar-bg-color;
+      background-color: @selected-window-title-bar-bg-color-dark;
 
       close-icon {
-        background: @close-icon-bg-color;
+        background: @close-icon-bg-color-dark;
         border: @close-icon-border;
       }
 
       minimize-icon {
-        background: @minimize-icon-bg-color;
+        background: @minimize-icon-bg-color-dark;
         border: @minimize-icon-border;
       }
 
       maximize-icon {
-        background: @maximize-icon-bg-color;
+        background: @maximize-icon-bg-color-dark;
         border: @maximize-icon-border;
       }
 
       maximized-icon {
-        background: @maximized-icon-bg-color;
+        background: @maximized-icon-bg-color-dark;
         border: @maximized-icon-border;
         padding: @maximized-icon-padding;
       }
 
       .title-name {
-        color: @selected-window-title-bar-color;
+        color: @selected-window-title-bar-color-dark;
       }
     }
   }
@@ -317,7 +239,7 @@
   animation: popup .2s cubic-bezier(.3, 1, .3, 1) backwards;
 }
 
-.ng-window-back-drop {
+.ng-window-back-drop-dark {
   position: fixed;
   margin: 0;
   padding: 0;
@@ -325,10 +247,10 @@
   filter: blur(20px);
   pointer-events: none;
   border-radius: @window-border-radius;
-  background: @back-drop-bg-color;
+  background: @back-drop-bg-color-dark;
 }
 
-.window-loading {
+.window-loading-dark {
   position: fixed;
   background: #FFF;
   border-radius: @window-border-radius;

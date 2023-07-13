@@ -35,6 +35,11 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
     @Input() offsetY: number = 200;
     @Input() offsetX: number = 200;
     @Input() loading = true; // is loading
+    @Input() theme: 'light' | 'dark' = 'light';
+
+    get themeSuffix() {
+        return this.theme === 'dark' ? '-dark' : '';
+    }
 
     @Input() language: 'zh' | 'en' = 'zh';
     loadingTip: string | TemplateRef<any> = this.getLocaleText('loading');

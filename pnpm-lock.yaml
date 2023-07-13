@@ -36,8 +36,8 @@ dependencies:
     specifier: ^2.5.3
     version: 2.5.3
   when-case:
-    specifier: ^2.1.4
-    version: 2.1.4
+    specifier: ^2.1.5
+    version: 2.1.5
   zone.js:
     specifier: 0.13.1
     version: 0.13.1
@@ -6864,8 +6864,8 @@ packages:
     engines: {node: '>=0.8.0'}
     dev: true
 
-  /when-case@2.1.4:
-    resolution: {integrity: sha512-kkhdVQI2E/YeZE6r39Mm8JpEnvny/bNxxP+Xyhoi4SYRYVwx6k2RUBrJf/JkMlRr4FHa9buQHipGC0WYr/daDQ==}
+  /when-case@2.1.5:
+    resolution: {integrity: sha512-tYQQxabAPt3DjdTPgsUUaYj51m4zOAparhDMvRIDO7pDyY3Y0sXLK8wQ1GoQXyVjVXukzSa0un76Pnvr7l/1Uw==}
     dev: false
 
   /which@1.3.1:
