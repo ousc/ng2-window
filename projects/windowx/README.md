@@ -56,7 +56,7 @@ export class AppComponent {
             instance: null,
         },
     };
-
+    
     openWindow(ref: TemplateRef<any>) {
         this.windowService.create({
             title: 'Window 1',
@@ -88,7 +88,7 @@ or use `ng-window` component in your Angular template:
     <ng-template #icon>
         <i class="fa fa-app"></i>
     </ng-template>
-    <!-- Window content here -->
+  <!-- Window content here -->
 </ng-window>
 ```
 
@@ -106,7 +106,7 @@ or use `ng-window` component in your Angular template:
 
 ## API
 
-### `ax-window` Component
+### `ng2-window` Component
 
 #### Inputs
 

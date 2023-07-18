@@ -106,7 +106,7 @@ or use `ng-window` component in your Angular template:
 
 ## API
 
-### `ax-window` Component
+### `ng2-window` Component
 
 #### Inputs
 

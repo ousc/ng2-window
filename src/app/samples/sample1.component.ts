@@ -83,7 +83,6 @@ export class Sample1Component implements OnInit {
       width: 300,
       height: 400,
       content: this.tpl,
-      language: 'en',
       offsetX: 300,
       offsetY: 400,
       align: 'leftTop',

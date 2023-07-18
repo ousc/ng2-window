@@ -160,10 +160,10 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
             this.maximized = false;
             await this.maximize();
             this.display = 'block';
-            this.loading = false;
+            // this.loading = false;
         } else {
             this.display = 'block';
-            this.loading = false;
+            // this.loading = false;
         }
         this.onReady.emit(this);
     }
