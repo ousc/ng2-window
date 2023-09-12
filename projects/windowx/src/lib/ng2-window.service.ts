@@ -84,7 +84,7 @@ export class Ng2WindowService {
         if (!this.dockComponentRef) {
             this.dockComponentRef = this._cfr.resolveComponentFactory(DockComponent).create(this._injector);
             this._appRef.attachView(this.dockComponentRef.hostView);
-            document.body.appendChild(this.dockComponentRef.location.nativeElement);
+            document.body.prepend(this.dockComponentRef.location.nativeElement);
         }
     }
 
@@ -100,7 +100,7 @@ export class Ng2WindowService {
         if(!document.querySelector('#ng-window-wrapper')) {
             const wrapper = document.createElement('div');
             wrapper.id = 'ng-window-wrapper';
-            document.body.appendChild(wrapper);
+            document.body.prepend(wrapper);
         }
     }
 

@@ -8,7 +8,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "build:lib": "ng build windowx --configuration production"
+    "build:lib": "ng build windowx --configuration production",
+    "publish": "npm run build:lib && cd dist/windowx && npm publish"
   },
   "private": true,
   "dependencies": {
