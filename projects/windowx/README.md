@@ -1,5 +1,3 @@
-Here is an example `README.md` for `ng2-window`:
-
 # ng2-window
 
 `ng2-window` is a powerful Angular window component, supports drag, resize, full screen, minimize, and various comprehensive window functions. It supports creation through declaration and service methods, complete window lifecycle management, and highly customizable styles.
@@ -30,9 +28,9 @@ Then add `Ng2WindowModule` to your app's module imports:
 
 ```typescript
 @NgModule({
-    imports: [
-        Ng2WindowModule
-    ]
+  imports: [
+      Ng2WindowModule
+  ]
 })
 export class AppModule { }
 ```
@@ -122,6 +120,7 @@ or use `ng-window` component in your Angular template:
 - `closable` (boolean): Whether the window can be closed
 - `maximizable` (boolean): Whether the window can be maximized
 - `minimizable` (boolean): Whether the window can be minimized
+- `outOfBounds` (boolean): Whether the window can be dragged out of the screen. if outOfBounds is `true` and the offsetY < 0, after dragging the window, the offsetY will be set to 0
 - `draggable` (boolean): Whether the window can be dragged
 - `resizable` (boolean): Whether the window can be resized
 - `loading` (boolean): Whether the window is loading

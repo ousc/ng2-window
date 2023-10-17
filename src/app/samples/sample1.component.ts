@@ -43,6 +43,7 @@ export class Sample1Component implements OnInit {
       offsetY: 100,
       align: 'leftTop',
       theme: 'dark',
+      outOfBounds: true,
       bodyStyle: {
         lineHeight: '1.5',
       },
@@ -66,6 +67,7 @@ export class Sample1Component implements OnInit {
       offsetX: 200,
       offsetY: 100,
       align: 'leftTop',
+      outOfBounds: true,
       bodyStyle: {
         lineHeight: '1.5',
       },
@@ -86,6 +88,7 @@ export class Sample1Component implements OnInit {
       offsetX: 300,
       offsetY: 400,
       align: 'leftTop',
+      outOfBounds: true,
       bodyStyle: {
         lineHeight: '1.5',
       },

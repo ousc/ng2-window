@@ -50,6 +50,8 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
     @Input() minimizable = true;
     @Input() resizable = true;
     @Input() draggable = true;
+    //允许窗口超出屏幕
+    @Input() outOfBounds = false;
 
     get themeSuffix() {
         return this.theme === 'dark' ? '-dark' : '';
@@ -146,10 +148,17 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
     cursorStyle = 'default';
     display = 'none';
 
-    isLeftBorder: boolean;
-    isRightBorder: boolean;
-    isTopBorder: boolean;
-    isBottomBorder: boolean;
+    border: {
+        isLeft?: boolean;
+        isRight?: boolean;
+        isTop?: boolean;
+        isBottom?: boolean;
+    } = {
+        isLeft: false,
+        isRight: false,
+        isTop: false,
+        isBottom: false
+    }
 
     constructor(private windowService: Ng2WindowService) {
     }
@@ -194,15 +203,55 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
             this.updateOffsetX(
                 when(this.align)(
                     In('leftTop', 'leftBottom',
-                        () => Math.max(event.clientX - this.clickedX, 0)),
+                        () => {
+                            if(!this.outOfBounds) {
+                                let offsetX = Math.max(event.clientX - this.clickedX, 0);
+                                if (offsetX + this.width > window.innerWidth) {
+                                    offsetX = window.innerWidth - this.width;
+                                }
+                                return offsetX;
+                            } else {
+                                return event.clientX - this.clickedX;
+                            }
+                        }),
                     In('rightTop', 'rightBottom',
-                        () => Math.max(window.innerWidth - event.clientX + this.clickedX - this.width, 0))
+                        () => {
+                            if(!this.outOfBounds) {
+                                let offsetX = Math.max(window.innerWidth - event.clientX + this.clickedX - this.width, 0);
+                                if (offsetX + this.width > window.innerWidth) {
+                                    offsetX = window.innerWidth - this.width;
+                                }
+                                return offsetX;
+                            } else {
+                                return window.innerWidth - event.clientX + this.clickedX - this.width;
+                            }
+                        })
                 )
             );
             this.updateOffsetY(
                 when(this.align)(
-                    In('leftTop', 'rightTop', () => Math.max(event.clientY - this.clickedY, 0)),
-                    In('leftBottom', 'rightBottom', () => Math.max(window.innerHeight - event.clientY + this.clickedY - this.height)),
+                    In('leftTop', 'rightTop', () => {
+                        if(!this.outOfBounds){
+                            let offsetY = Math.max(event.clientY - this.clickedY, 0);
+                            if (offsetY + this.height > window.innerHeight) {
+                                offsetY = window.innerHeight - this.height;
+                            }
+                            return offsetY;
+                        } else {
+                            return event.clientY - this.clickedY;
+                        }
+                    }),
+                    In('leftBottom', 'rightBottom', () => {
+                        if(!this.outOfBounds){
+                            let offsetY = Math.max(window.innerHeight - event.clientY + this.clickedY - this.height, 0);
+                            if (offsetY + this.height > window.innerHeight) {
+                                offsetY = window.innerHeight - this.height;
+                            }
+                            return offsetY;
+                        } else {
+                            return window.innerHeight - event.clientY + this.clickedY - this.height;
+                        }
+                    }),
                 )
             );
         }
@@ -228,45 +277,58 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
         if (this.resizable) {
             if (leftBorderX && bottomBorderY) {
                 this.cursorStyle = 'sw-resize';
-                this.isLeftBorder = true;
-                this.isBottomBorder = true;
+                this.border = {
+                    isLeft: true,
+                    isBottom: true,
+                }
                 this.contentScrollable = true;
             } else if (rightBorderX && bottomBorderY) {
                 this.cursorStyle = 'se-resize';
-                this.isRightBorder = true;
-                this.isBottomBorder = true;
+                this.border = {
+                    isRight: true,
+                    isBottom: true,
+                }
                 this.contentScrollable = true;
             } else if (leftBorderX && topBorderY) {
                 this.cursorStyle = 'nw-resize';
-                this.isLeftBorder = true;
-                this.isTopBorder = true;
+                this.border = {
+                    isLeft: true,
+                    isTop: true,
+                }
                 this.contentScrollable = true;
             } else if (rightBorderX && topBorderY) {
                 this.cursorStyle = 'ne-resize';
-                this.isTopBorder = true;
-                this.isRightBorder = true;
+                this.border = {
+                    isRight: true,
+                    isTop: true,
+                }
                 this.contentScrollable = true;
             } else if (leftBorderX && rightLeftBorderY) {
                 this.cursorStyle = 'w-resize';
-                this.isLeftBorder = true;
+                this.border = {
+                    isLeft: true,
+                }
                 this.contentScrollable = true;
             } else if (rightBorderX && rightLeftBorderY) {
                 this.cursorStyle = 'e-resize';
-                this.isRightBorder = true;
+                this.border = {
+                    isRight: true,
+                }
                 this.contentScrollable = true;
             } else if (topBorderY && topBottomBorderX) {
                 this.cursorStyle = 'n-resize';
-                this.isTopBorder = true;
+                this.border = {
+                    isTop: true,
+                }
                 this.contentScrollable = true;
             } else if (bottomBorderY && topBottomBorderX) {
                 this.cursorStyle = 's-resize';
-                this.isBottomBorder = true;
+                this.border = {
+                    isBottom: true,
+                }
                 this.contentScrollable = true;
             } else {
-                this.isLeftBorder = false;
-                this.isRightBorder = false;
-                this.isTopBorder = false;
-                this.isBottomBorder = false;
+                this.border = {};
                 this.cursorStyle = 'auto';
                 this.contentScrollable = false;
             }
@@ -280,10 +342,10 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
         if (this.dragging) {
             return;
         }
-        if (!this.isLeftBorder && !this.isRightBorder && !this.isTopBorder && !this.isBottomBorder) {
+        if (!this.border.isLeft && !this.border.isRight && !this.border.isTop && !this.border.isBottom) {
             return;
         }
-        if (this.isLeftBorder) {
+        if (this.border.isLeft) {
             if (this.align.toLocaleLowerCase().includes('left')) {
                 let r = this.right;
                 this.updateOffsetX(event.clientX);
@@ -292,7 +354,7 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
                 this.width = this.right - event.clientX;
             }
         }
-        if (this.isRightBorder) {
+        if (this.border.isRight) {
             if (this.align.toLocaleLowerCase().includes('left')) {
                 this.width += event.clientX - this.right;
             } else {
@@ -300,7 +362,7 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
                 this.updateOffsetX(Math.max(window.innerWidth - event.clientX, 0));
             }
         }
-        if (this.isTopBorder) {
+        if (this.border.isTop) {
             if (this.align.toLocaleLowerCase().includes('top')) {
                 let b = this.bottom;
                 this.updateOffsetY(Math.max(event.clientY, 0));
@@ -309,7 +371,7 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
                 this.height = this.bottom - event.clientY;
             }
         }
-        if (this.isBottomBorder) {
+        if (this.border.isBottom) {
             if (this.align.toLocaleLowerCase().includes('top')) {
                 this.height += event.clientY - this.bottom;
             } else {
@@ -323,6 +385,15 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
         }
         if (this.width < this.minWidth) {
             this.width = this.minWidth;
+        }
+        if (!this.outOfBounds && this.height + this.offsetY > window.innerHeight) {
+            this.updateOffsetY(Math.max(window.innerHeight - this.height, 0));
+        }
+        if (!this.outOfBounds && this.width + this.offsetX > window.innerWidth) {
+            this.updateOffsetX(Math.max(window.innerWidth - this.width, 0));
+        }
+        if(this.offsetY < 0) {
+            this.updateOffsetY(0);
         }
         this.onResize.emit(this.windowSize);
     }

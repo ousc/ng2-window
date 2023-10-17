@@ -30,6 +30,7 @@ export interface WindowConfig {
     draggable?: boolean;
     resizable?: boolean;
     closeOnNavigation?: boolean;
+    outOfBounds?: boolean;
     closable?: boolean;
     theme?: 'light' | 'dark';
 }
