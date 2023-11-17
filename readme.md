@@ -146,6 +146,27 @@ or use `ng-window` component in your Angular template:
 - `onSelected`: Emitted when the window is selected
 - `onMove`: Emitted when the window is moved
 
+## Custom Style
+before use ng2-window, please import style varibles:
+```less
+@import 'ng2-window/styles/theme/default';
+@import 'ng2-window/styles/style';
+// If you want to import more style, you can import them after import default style:
+// @import 'ng2-window/styles/theme/default-dark';
+// @import 'ng2-window/styles/style-dark'; // if you are using dark style, you need also import this
+
+// other theme we apply:
+// @import 'ng2-window/styles/theme/default'
+// @import 'ng2-window/styles/theme/macos'
+// @import 'ng2-window/styles/theme/material-design'
+```
+
+you can modify styles by overload less varibles:
+```less
+@window-title-bar-text-align: left;
+```
+All varibles (see here)[https://github.com/ousc/ng2-window/blob/main/projects/windowx/styles/theme/default.less]
+
 ## Development
 
 To run the demo application:
