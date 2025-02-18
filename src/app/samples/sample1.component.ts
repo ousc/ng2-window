@@ -19,6 +19,7 @@ import {Ng2WindowService} from "../../../projects/windowx/src/lib/ng2-window.ser
       background: url('/assets/ng-windowx-large.png') 100%;
     }
   `],
+  standalone: false
 })
 export class Sample1Component implements OnInit {
   constructor(private _window: Ng2WindowService) {

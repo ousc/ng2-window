@@ -41,6 +41,7 @@ import { Component } from '@angular/core';
     </svg>
   `,
   styles: [],
+  standalone: false
 })
 export class MaximizeDIcon {
   constructor() {}
