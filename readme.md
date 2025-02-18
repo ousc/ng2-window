@@ -188,30 +188,30 @@ before use ng2-window, please import style varibles:
 ```css
 @import "ng2-window/styles/theme/default.css";
 @import "ng2-window/styles/style.css";
-// If you want to import more style, you can import them after import default style:
-// @import 'ng2-window/styles/theme/default-dark.css';
+/*If you want to import more style, you can import them after import default style:*/
+@import 'ng2-window/styles/theme/default-dark.css';
 
-// other theme we apply:
-// @import 'ng2-window/styles/theme/default.css'
-// @import 'ng2-window/styles/theme/macos.css'
-// @import 'ng2-window/styles/theme/material-design.css'
+/*other theme we apply:*/
+/*@import 'ng2-window/styles/theme/default.css'*/
+/*@import 'ng2-window/styles/theme/macos.css'*/
+/*@import 'ng2-window/styles/theme/material-design.css'*/
 ```
 
 you can modify styles by overload css varibles:
 
 ```css
-// For example, you can change the window title bar text align
+/*For example, you can change the window title bar text align*/
 :root {
     --window-title-bar-text-align: left;
 }
 
-// Or you can change the window title bar text align for dark theme
+/*Or you can change the window title bar text align for dark theme*/
 .ng-window-theme-dark {
     --window-title-bar-text-align: center;
 }
 ```
 
-All varibles (see here)[https://github.com/ousc/ng2-window/blob/main/projects/windowx/styles/theme/default.css]
+All variables (see here)[https://github.com/ousc/ng2-window/blob/main/projects/windowx/styles/theme/default.css]
 
 ## Development
 
