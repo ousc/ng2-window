@@ -6,8 +6,8 @@ import {Ng2WindowService} from "../../ng2-window.service";
   selector: 'dock',
   standalone: false,
   template: `
-    <div [class]="'ng-window-dock' + themeSuffix">
-      <div *ngFor="let dock of docks" class="ng-window-dock-item" (click)="restore(dock)">
+    <div [ngClass]="['ng-window-dock', 'ng-window-theme' + themeSuffix]">
+      <div *ngFor="let dock of docks" class="ng-window-dock-item" (click)="restore(dock)" [title]="dock.title">
         <ng-container *stringTemplateOutlet="dock.icon">
           <img class="icon" draggable="false" [src]="dock.icon" alt="icon"/>
         </ng-container>

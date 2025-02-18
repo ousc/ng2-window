@@ -5,13 +5,13 @@ import {
     EventEmitter,
     HostListener,
     Input,
-    OnInit,
     Output,
+    signal,
     TemplateRef,
     ViewChild
 } from '@angular/core';
 import {Ng2WindowService} from "./ng2-window.service";
-import {In, when} from "when-case";
+import {In, when} from "conditio";
 
 interface WindowSize {
     offsetY: number;
@@ -26,7 +26,7 @@ interface WindowSize {
     templateUrl: 'ng2-window.component.html',
     standalone: false
 })
-export class Ng2WindowComponent implements OnInit, AfterViewInit {
+export class Ng2WindowComponent implements AfterViewInit {
     windowId = 'window' + Math.floor(Math.random() * 1000000);
     titleHeight = 0;
 
@@ -45,7 +45,7 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
     @Input() minHeight: number = 100;
     @Input() offsetY: number = 200;
     @Input() offsetX: number = 200;
-    @Input() loading = true; // is loading
+    @Input() loading = signal(true); // is loading
     @Input() theme: 'light' | 'dark' = 'light';
     @Input() maximizable = true;
     @Input() minimizable = true;
@@ -162,20 +162,6 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
     }
 
     constructor(private windowService: Ng2WindowService) {
-    }
-
-    async ngOnInit(): Promise<void> {
-        if (this.maximized) {
-            this.display = 'none';
-            this.maximized = false;
-            await this.maximize();
-            this.display = 'block';
-            this.loading = false;
-        } else {
-            this.display = 'block';
-            this.loading = false;
-        }
-        this.onReady.emit(this);
     }
 
     get left() {
@@ -556,7 +542,18 @@ export class Ng2WindowComponent implements OnInit, AfterViewInit {
     @ViewChild('titleBar', {static: false}) set titleBar(titleBar: ElementRef) {
         this.titleHeight = titleBar.nativeElement.offsetHeight;
     }
-    ngAfterViewInit(): void {
+    async ngAfterViewInit(): Promise<void> {
+        if (this.maximized) {
+            this.display = 'none';
+            this.maximized = false;
+            await this.maximize();
+            this.display = 'block';
+            this.loading.set(false)
+        } else {
+            this.display = 'block';
+            this.loading.set(false);
+        }
+        this.onReady.emit(this);
         this.updateOffsetX(this.offsetX);
         this.updateOffsetY(this.offsetY);
     }

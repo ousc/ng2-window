@@ -27,9 +27,12 @@ export class Sample1Component implements OnInit {
 
   @ViewChild('tpl', {static: true}) tpl: TemplateRef<any>;
 
-  windowManager: any = {
-    tpl: {}
-  }
+  windows: {
+    [key: string]: {
+      window: Ng2WindowComponent,
+      visible: boolean,
+    };
+  } = {}
   count = 3;
 
   openWindow() {
@@ -48,12 +51,17 @@ export class Sample1Component implements OnInit {
       bodyStyle: {
         lineHeight: '1.5',
       },
-    }).then((win: Ng2WindowComponent) => {
-      this.windowManager.tpl.instance = win;
+    }).then((window: Ng2WindowComponent) => {
+      console.log(window)
+      const key = window.windowId;
+      this.windows[key] = {
+        window,
+        visible: true,
+      };
 
-      win.onClose.subscribe(() => {
-        this.windowManager.tpl.visible = false;
-        this.windowManager.tpl.instance = null;
+      window.onClose.subscribe(() => {
+        this.windows[key].visible = false;
+        this.windows[key].window = null
       });
     });
   }
@@ -68,17 +76,20 @@ export class Sample1Component implements OnInit {
       offsetX: 200,
       offsetY: 100,
       align: 'leftTop',
-      outOfBounds: true,
+      outOfBounds: false,
       bodyStyle: {
         lineHeight: '1.5',
       },
-    }).then((win: Ng2WindowComponent) => {
-      this.windowManager.tpl.instance = win;
+    }).then((windows: Ng2WindowComponent) => {
+        this.windows[windows.windowId] = {
+            window: windows,
+            visible: true,
+        };
 
-      win.onClose.subscribe(() => {
-        this.windowManager.tpl.visible = false;
-        this.windowManager.tpl.instance = null;
-      });
+        windows.onClose.subscribe(() => {
+            this.windows[windows.windowId].visible = false;
+            this.windows[windows.windowId].window = null
+        });
     });
     this._window.create({
       title: 'Window 2',
@@ -94,12 +105,15 @@ export class Sample1Component implements OnInit {
         lineHeight: '1.5',
       },
     }).then((win: Ng2WindowComponent) => {
-      this.windowManager.tpl.instance = win;
+        this.windows[win.windowId] = {
+            window: win,
+            visible: true,
+        };
 
-      win.onClose.subscribe(() => {
-        this.windowManager.tpl.visible = false;
-        this.windowManager.tpl.instance = null;
-      });
+        win.onClose.subscribe(() => {
+            this.windows[win.windowId].visible = false;
+            this.windows[win.windowId].window = null
+        });
     });
   }
 }

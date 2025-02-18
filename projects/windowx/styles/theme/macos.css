@@ -1,0 +1,81 @@
+/*File: macos.less*/
+/*Theme: macos*/
+
+/*==========The following is the custom theme variable area==========*/
+/*window and window title bar*/
+:root {
+    --window-bg-color: #FFF;
+    --window-title-bar-height: 33px;
+    --window-title-bar-font-size: 14px;
+    --window-title-bar-bg-color: #FFF;
+    --window-title-bar-color: #000;
+    --window-title-bar-radius: 10px 10px 0 0;
+    --window-title-bar-border-color: #DDD;
+    --window-title-bar-border-style: solid;
+    --window-title-bar-border-width: 0 0 1px 0;
+    --window-title-bar-offset: 3px;
+    --window-title-bar-text-align: center;
+    --window-title-bar-font-family: PingFang SC, -apple-system, BlinkMacSystemFont Segoe UI, Microsoft YaHei Roboto Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    --window-title-bar-font-weight: normal;
+    --window-title-name-padding: 0;
+    --window-border-radius: 10px;
+    --window-box-shadow: 1px 0 7px #999;
+    --window-box-shadow-hover: 3px 3px 15px #666;
+    --window-body-offset-x: 3px;
+    --window-body-offset-y: 3px;
+    --window-body-bg-color: #FFF;
+    --window-body-color: #000;
+    --window-back-drop-filter: blur(2px);
+    --window-opacity: .9;
+    --window-body-padding: 10px;
+    --window-wrapper-zIndex: 1024;
+    --icon-width: 20px;
+    --content-radius: 0 0 10px 10px;
+    --body-drag-area-width: 3px;
+    --title-name-margin: 0 0 0 5px;
+
+    /*selected window title bar*/
+    --selected-window-title-bar-color: #000;
+    --selected-window-title-bar-bg-color: #FFF;
+    --selected-window-box-shadow: 5px 10px 5px rgba(0, 0, 0, 0.46);
+
+    /*back drop */
+    --back-drop-bg-color: #999;
+
+
+    /*icons */
+    --win-icon-bg-color: #DDD;
+    --win-icon-inset: 5px auto auto 10px;
+    --win-icon-padding: 2px;
+    --win-icon-svg-width: 7px;
+    --win-icon-svg-visibility: hidden;
+    --win-icon-svg-hover-visibility: visible;
+    --win-icon-border: 1px solid #DDD;
+
+    --close-icon-bg-color: #fc5e5a !important;
+    --close-icon-border: 1px solid #dc3b39 !important;
+    --close-icon-bg-color-hover: #fc5e5a !important;
+    --close-icon-border-hover: solid 1px #dc3b39 !important;
+    --close-icon-order: 1;
+
+    --maximize-icon-bg-color: #34c84a !important;
+    --maximize-icon-border: 1px solid #12ad2c !important;
+    --maximize-icon-bg-color-hover: #2ccd47 !important;
+    --maximize-icon-border-hover: solid 1px #12ad2c !important;
+    --minimize-icon-order: 2;
+
+    --maximized-icon-bg-color: #34c84a !important;
+    --maximized-icon-border: 1px solid #12ad2c !important;
+    --maximized-icon-bg-color-hover: #2ccd47 !important;
+    --maximized-icon-border-hover: solid 1px #12ad2c !important;
+    --maximized-icon-padding: 7px;
+
+    --minimize-icon-bg-color: #fbc13c !important;
+    --minimize-icon-border: 1px solid #eaad2e !important;
+    --minimize-icon-bg-color-hover: #fbc13c !important;
+    --minimize-icon-border-hover: solid 1px #eaad2e !important;
+    --maximize-icon-order: 3;
+
+    --win-theme-icon-svg-display: none;
+    --apple-theme-icon-svg-display: block;
+}

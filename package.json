@@ -1,6 +1,6 @@
 {
   "name": "ng2-window",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Angular WindowX, a simple and easy-to-use Angular window component with powerful functions, supporting theme customization, and built-in multiple awesome themes.",
   "scripts": {
     "ng": "ng",
@@ -24,7 +24,7 @@
     "rxjs": "7.8.1",
     "tslib": "^2.5.3",
     "zone.js": "~0.15.0",
-    "when-case": "^2.1.5"
+    "conditio": "^2.3.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.1.7",
