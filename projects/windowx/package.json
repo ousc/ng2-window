@@ -7,8 +7,8 @@
     "url": "https://github.com/ousc/angular-windowx.git"
   },
   "peerDependencies": {
-    "@angular/common": "^16.1.0",
-    "@angular/core": "^16.1.0",
+    "@angular/common": "^19.1.7",
+    "@angular/core": "^19.1.7",
     "when-case": "^2.1.5"
   },
   "dependencies": {

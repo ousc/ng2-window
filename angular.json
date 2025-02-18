@@ -66,11 +66,11 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "angular-windowx:build:production"
+              "buildTarget": "angular-windowx:build:production"
             },
             "development": {
-              "browserTarget": "angular-windowx:build:development"
-            }
+              "buildTarget": "angular-windowx:build:development"
+            },
           },
           "defaultConfiguration": "development"
         },
@@ -135,5 +135,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "90218363-1464-41e5-ae03-6f9ab3a29d18"
   }
 }
