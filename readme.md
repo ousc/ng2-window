@@ -21,7 +21,7 @@ npm install ng2-window --save
 Latest version available for each version of Angular
 
 | ng2-window | Angular |
-|------------|---------|
+| ---------- | ------- |
 | 1.1.6      | 16.0.0+ |
 | 2.0.0      | 19.0.0+ |
 
