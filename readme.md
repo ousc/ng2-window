@@ -42,6 +42,21 @@ Then add `Ng2WindowModule` to your app's module imports:
 export class AppModule {}
 ```
 
+Since > Angular 16, standalone is supported, you can set standalone to false to use ng-window component in your Angular
+template
+
+```typescript
+imports: [
+    Ng2WindowComponent,
+    DockComponent,
+    CloseIcon,
+    LoadingIcon,
+    MaximizeIcon,
+    MinimizeIcon,
+    MinimizedIcon,
+]
+```
+
 Once the module is installed, you can use `WindowService` to create window dynamically:
 
 ```typescript
@@ -56,12 +71,11 @@ import { Ng2WindowService } from "ng2-window";
 export class AppComponent {
   constructor(private windowService: Ng2WindowService) {}
 
-  windowManager = {
-    tpl: {
-      visible: false,
-      instance: null,
-    },
-  };
+  windows: { [key: string]: {
+      window: Ng2WindowComponent,
+      visible: boolean
+    } 
+  } = {};
 
   openWindow(ref: TemplateRef<any>) {
     this.windowService
@@ -78,12 +92,14 @@ export class AppComponent {
           lineHeight: "1.5",
         },
       })
-      .then((win: Ng2WindowComponent) => {
-        this.windowManager.tpl.instance = win;
-
-        win.onClose.subscribe(() => {
-          this.windowManager.tpl.visible = false;
-          this.windowManager.tpl.instance = null;
+      .then((window: Ng2WindowComponent) => {
+        this.windows[window.id] = {
+          window,
+          visible: true,
+        };
+        window.onClose.subscribe(() => {
+          this.windows[window.id].visible = false;
+          this.windows[window.id].window = null;
         });
       });
   }
@@ -169,26 +185,33 @@ or use `ng-window` component in your Angular template:
 
 before use ng2-window, please import style varibles:
 
-```less
-@import "ng2-window/styles/theme/default";
-@import "ng2-window/styles/style";
-// If you want to import more style, you can import them after import default style:
-// @import 'ng2-window/styles/theme/default-dark';
-// @import 'ng2-window/styles/style-dark'; // if you are using dark style, you need also import this
+```css
+@import "ng2-window/styles/theme/default.css";
+@import "ng2-window/styles/style.css";
+/*If you want to import more style, you can import them after import default style:*/
+@import 'ng2-window/styles/theme/default-dark.css';
 
-// other theme we apply:
-// @import 'ng2-window/styles/theme/default'
-// @import 'ng2-window/styles/theme/macos'
-// @import 'ng2-window/styles/theme/material-design'
+/*other theme we apply:*/
+/*@import 'ng2-window/styles/theme/default.css'*/
+/*@import 'ng2-window/styles/theme/macos.css'*/
+/*@import 'ng2-window/styles/theme/material-design.css'*/
 ```
 
-you can modify styles by overload less varibles:
+you can modify styles by overload css varibles:
 
-```less
-@window-title-bar-text-align: left;
+```css
+/*For example, you can change the window title bar text align*/
+:root {
+    --window-title-bar-text-align: left;
+}
+
+/*Or you can change the window title bar text align for dark theme*/
+.ng-window-theme-dark {
+    --window-title-bar-text-align: center;
+}
 ```
 
-All varibles (see here)[https://github.com/ousc/ng2-window/blob/main/projects/windowx/styles/theme/default.less]
+All variables (see here)[https://github.com/ousc/ng2-window/blob/main/projects/windowx/styles/theme/default.css]
 
 ## Development
 

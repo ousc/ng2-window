@@ -9,17 +9,15 @@ import { Component } from '@angular/core';
         viewBox="0 0 10 10"
         xmlns="http://www.w3.org/2000/svg">
       <polygon
-          class="apple-theme"
+          class="apple-theme color-path"
           points="5,0 0,0 0,5"
-          fill="#444"
       />
       <polygon
-          class="apple-theme"
+          class="apple-theme color-path"
           points="10,10 10,5 5,10"
-          fill="#444"
       />
       <rect
-          class="win-theme"
+          class="win-theme color-rect"
           x="0"
           y="0"
           width="10"
@@ -29,14 +27,13 @@ import { Component } from '@angular/core';
           fill="none"
       />
       <rect
-          class="win-theme"
+          class="win-theme color-rect"
           x="1"
           y="1"
           width="8"
           height="1"
           stroke="#444"
           stroke-width="1"
-          fill="none"
       />
     </svg>
   `,

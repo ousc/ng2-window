@@ -1,0 +1,44 @@
+/* File: default-dark.less*/
+/* Theme: default-dark*/
+
+/* ==========The following is the custom theme variable area==========*/
+/* window and window title bar*/
+.ng-window-theme-dark {
+    --window-bg-color: #142138;
+    --window-title-bar-bg-color: #142138;
+    --window-title-bar-color: #FFF;
+    --window-title-bar-border-color: #DDD;
+    --window-box-shadow: 1px 0 7px #999;
+    --window-box-shadow-hover: 3px 3px 15px #CCC;
+    --window-body-bg-color: #142138;
+    --window-body-color: #FFF;
+
+    /*selected window title bar */
+    --selected-window-title-bar-color: #FFF;
+    --selected-window-title-bar-bg-color: #142138;
+    --selected-window-box-shadow: 5px 10px 5px rgba(0, 0, 0, 0.46);
+
+    /*back drop*/
+    --back-drop-bg-color: #999;
+
+
+    /*icons */
+    --win-icon-bg-color: #449;
+    --win-icon-border: 1px solid #66A;
+
+    --close-icon-bg-color: #EEE !important;
+    --close-icon-bg-color-hover: #fc5e5a !important;
+    --close-icon-border-hover: solid 1px #dc3b39 !important;
+
+    --maximize-icon-bg-color: #EEE !important;
+    --maximize-icon-bg-color-hover: #2ccd47 !important;
+    --maximize-icon-border-hover: solid 1px #12ad2c !important;
+
+    --maximized-icon-bg-color: #EEE !important;
+    --maximized-icon-bg-color-hover: #2ccd47 !important;
+    --maximized-icon-border-hover: solid 1px #12ad2c !important;
+
+    --minimize-icon-bg-color: #EEE !important;
+    --minimize-icon-bg-color-hover: #fbc13c !important;
+    --minimize-icon-border-hover: solid 1px #eaad2e !important;
+}

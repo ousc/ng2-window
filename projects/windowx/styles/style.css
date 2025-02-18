@@ -5,7 +5,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  z-index: @window-wrapper-zIndex;
+  z-index: var(--window-wrapper-zIndex);
   pointer-events: none;
 }
 
@@ -83,12 +83,11 @@
   width: auto;
   height: 40px;
   display: inline-flex;
-  z-index: @window-wrapper-zIndex;
+  z-index: var(--window-wrapper-zIndex);
   pointer-events: none;
 
-
   .icon {
-    width: @icon-width;
+    width: var(--icon-width);
     vertical-align: sub;
     margin-right: 4px;
   }
@@ -100,8 +99,8 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    background: @window-title-bar-bg-color;
-    color: @window-title-bar-color;
+    background: var(--window-title-bar-bg-color);
+    color: var(--window-title-bar-color);
     border-radius: 4px;
     margin-right: 5px;
     display: flex;
@@ -119,9 +118,11 @@
 
 .ng-window {
   position: fixed;
-  background: @window-bg-color;
-  border-radius: @window-border-radius;
-  box-shadow: @window-box-shadow;
+  background: var(--window-bg-color);
+  border-radius: var(--window-border-radius);
+  box-shadow: var(--window-box-shadow);
+  backdrop-filter: var(--window-back-drop-filter);
+  opacity: var(--window-opacity);
   pointer-events: auto;
   margin: 0;
   padding: 0;
@@ -153,57 +154,58 @@
   }
 
   .win-title-bar {
-    left: @body-drag-area-width;
-    top: @body-drag-area-width;
-    font-family: @window-title-bar-font-family;
-    color: @window-title-bar-color;
-    border-radius: @window-title-bar-radius;
-    background: @window-title-bar-bg-color;
-    height: @window-title-bar-height;
-    line-height: @window-title-bar-height;
-    width: calc(100% - @window-title-bar-offset * 2);
-    border-color: @window-title-bar-border-color;
-    border-width: @window-title-bar-border-width;
+    left: var(--body-drag-area-width);
+    top: var(--body-drag-area-width);
+    font-family: var(--window-title-bar-font-family), serif;
+    color: var(--window-title-bar-color);
+    border-radius: var(--window-title-bar-radius);
+    background: var(--window-title-bar-bg-color);
+    height: var(--window-title-bar-height);
+    line-height: var(--window-title-bar-height);
+    width: calc(100% - var(--window-title-bar-offset) * 2);
+    border-color: var(--window-title-bar-border-color);
+    border-width: var(--window-title-bar-border-width);
     position: absolute;
     border-style: solid;
-    text-align: @window-title-bar-text-align;
-    font-weight: @window-title-bar-font-weight;
+    text-align: var(--window-title-bar-text-align);
+    font-weight: var(--window-title-bar-font-weight);
     user-select: none;
+    cursor: move;
 
 
     .win-icons {
       display: inline-flex;
       cursor: default;
       position: absolute;
-      inset: @win-icon-inset;
+      inset: var(--win-icon-inset);
 
       .win-icon {
         display: inline-block;
-        padding: @win-icon-padding;
+        padding: var(--win-icon-padding);
         border-radius: 7px;
         margin: 4px;
         text-align: center;
-        background-color: @win-icon-bg-color;
-        border: @win-icon-border;
+        background-color: var(--win-icon-bg-color);
+        border: var(--win-icon-border);
         cursor: pointer;
 
         svg {
-          width: @win-icon-svg-width;
-          height: @win-icon-svg-width;
+          width: var(--win-icon-svg-width);
+          height: var(--win-icon-svg-width);
           display: block;
-          visibility: @win-icon-svg-visibility;
+          visibility: var(--win-icon-svg-visibility);
 
           .win-theme {
-            display: @win-theme-icon-svg-display;
+            display: var(--win-theme-icon-svg-display);
           }
 
           .apple-theme {
-            display: @apple-theme-icon-svg-display;
+            display: var(--apple-theme-icon-svg-display);
           }
         }
 
         &:hover svg {
-          visibility: @win-icon-svg-hover-visibility;
+          visibility: var(--win-icon-svg-hover-visibility);
 
           * {
             stroke: #000;
@@ -212,50 +214,51 @@
       }
 
       close-icon {
-        order: @close-icon-order;
+        order: var(--close-icon-order);
       }
 
       minimize-icon {
-        order: @minimize-icon-order;
+        order: var(--minimize-icon-order);
       }
 
       maximize-icon {
-        order: @maximize-icon-order;
+        order: var(--maximize-icon-order);
       }
 
       maximized-icon {
-        order: @maximize-icon-order;
+        order: var(--maximize-icon-order);
       }
 
       close-icon:hover {
-        background: @close-icon-bg-color-hover;
-        border: @close-icon-border-hover;
+        background: var(--close-icon-bg-color-hover);
+        border: var(--close-icon-border-hover);
       }
 
       minimize-icon:hover {
-        background: @minimize-icon-bg-color-hover;
-        border: @minimize-icon-border-hover;
+        background: var(--minimize-icon-bg-color-hover);
+        border: var(--minimize-icon-border-hover);
       }
 
       maximize-icon:hover {
-        background: @maximize-icon-bg-color-hover;
-        border: @maximize-icon-border-hover;
+        background: var(--maximize-icon-bg-color-hover);
+        border: var(--maximize-icon-border-hover);
       }
 
       maximized-icon:hover {
-        background: @maximized-icon-bg-color-hover;
-        border: @maximized-icon-border-hover;
+        background: var(--maximized-icon-bg-color-hover);
+        border: var(--maximized-icon-border-hover);
       }
     }
 
     .title-name {
-      font-size: @window-title-bar-font-size;
-      line-height: @window-title-bar-height;
-      padding: @window-title-name-padding;
+      font-size: var(--window-title-bar-font-size);
+      line-height: var(--window-title-bar-height);
+      padding: var(--window-title-name-padding);
       display: inline-block;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      cursor: default;
     }
 
     &.no-drag {
@@ -263,53 +266,59 @@
     }
 
     .icon {
-      width: @icon-width;
+      width: var(--icon-width);
       vertical-align: sub;
       margin-right: 4px;
     }
   }
 
   .body {
-    background: @window-body-bg-color;
-    color: @window-body-color;
-    left: @window-body-offset-x;
-    width: calc(100% - @window-body-offset-x * 2);
-    height: calc(100% - @window-body-offset-y * 2 - @window-title-bar-height - @window-title-bar-offset);
-    border-radius: @content-radius;
-    top: calc(@window-title-bar-height + @window-title-bar-offset + @window-body-offset-y);
+    background: var(--window-body-bg-color);
+    color: var(--window-body-color);
+    left: var(--window-body-offset-x);
+    width: calc(100% - var(--window-body-offset-x) * 2);
+    height: calc(100% - var(--window-body-offset-y) * 2 - var(--window-title-bar-height) - var(--window-title-bar-offset));
+    padding: var(--window-body-padding);
+    border-radius: var(--content-radius);
+    top: calc(var(--window-title-bar-height) + var(--window-title-bar-offset) + var(--window-body-offset-y));
     position: absolute;
     overflow: auto;
   }
 
+
+  &:hover {
+    box-shadow: var(--window-box-shadow-hover) !important;
+  }
+
   &.selected {
-    box-shadow: @selected-window-box-shadow;
+    box-shadow: var(--selected-window-box-shadow);
 
     .win-title-bar {
-      background-color: @selected-window-title-bar-bg-color;
+      background-color: var(--selected-window-title-bar-bg-color);
 
       close-icon {
-        background: @close-icon-bg-color;
-        border: @close-icon-border;
+        background: var(--close-icon-bg-color);
+        border: var(--close-icon-border);
       }
 
       minimize-icon {
-        background: @minimize-icon-bg-color;
-        border: @minimize-icon-border;
+        background: var(--minimize-icon-bg-color);
+        border: var(--minimize-icon-border);
       }
 
       maximize-icon {
-        background: @maximize-icon-bg-color;
-        border: @maximize-icon-border;
+        background: var(--maximize-icon-bg-color);
+        border: var(--maximize-icon-border);
       }
 
       maximized-icon {
-        background: @maximized-icon-bg-color;
-        border: @maximized-icon-border;
-        padding: @maximized-icon-padding;
+        background: var(--maximized-icon-bg-color);
+        border: var(--maximized-icon-border);
+        padding: var(--maximized-icon-padding);
       }
 
       .title-name {
-        color: @selected-window-title-bar-color;
+        color: var(--selected-window-title-bar-color);
       }
     }
   }
@@ -324,14 +333,14 @@
   overflow: auto;
   filter: blur(20px);
   pointer-events: none;
-  border-radius: @window-border-radius;
-  background: @back-drop-bg-color;
+  border-radius: var(--window-border-radius);
+  background: var(--back-drop-bg-color);
 }
 
 .window-loading {
   position: fixed;
   background: #FFF;
-  border-radius: @window-border-radius;
+  border-radius: var(--window-border-radius);
   padding: 10px;
   width: 200px;
   height: 100px;
@@ -341,4 +350,12 @@
   bottom: 0;
   margin: auto;
   text-align: center;
+}
+
+svg path.color-path {
+  fill: var(--window-title-bar-color);
+}
+
+svg rect.color-rect {
+  stroke: var(--window-title-bar-color);
 }

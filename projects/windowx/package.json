@@ -1,6 +1,6 @@
 {
   "name": "ng2-window",
-  "version": "1.1.4",
+  "version": "2.0.0",
   "description": "A simple and easy-to-use Angular window component with powerful functions, supporting theme customization, and built-in multiple awesome themes.",
   "repository": {
     "type": "git",
@@ -9,7 +9,7 @@
   "peerDependencies": {
     "@angular/common": "^19.1.7",
     "@angular/core": "^19.1.7",
-    "when-case": "^2.1.5"
+    "conditio": "^2.3.4"
   },
   "dependencies": {
     "tslib": "^2.3.0"
