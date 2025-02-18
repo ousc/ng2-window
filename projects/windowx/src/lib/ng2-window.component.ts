@@ -23,7 +23,8 @@ interface WindowSize {
 
 @Component({
     selector: 'ng-window',
-    templateUrl: 'ng2-window.component.html'
+    templateUrl: 'ng2-window.component.html',
+    standalone: false
 })
 export class Ng2WindowComponent implements OnInit, AfterViewInit {
     windowId = 'window' + Math.floor(Math.random() * 1000000);

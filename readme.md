@@ -16,76 +16,95 @@ To install `ng2-window`, simply run:
 npm install ng2-window --save
 ```
 
+# Dependencies
+
+Latest version available for each version of Angular
+
+| ng2-window | Angular |
+| ---------- | ------- |
+| 0.0.0      | 16.0.0+ |
+| 1.0.0      | 19.0.0+ |
+
 ## Usage
 
 Import `ng2-window` module in your Angular app:
 
 ```typescript
-import { Ng2WindowModule } from 'ng2-window';
+import { Ng2WindowModule } from "ng2-window";
 ```
 
 Then add `Ng2WindowModule` to your app's module imports:
 
 ```typescript
 @NgModule({
-  imports: [
-      Ng2WindowModule
-  ]
+  imports: [Ng2WindowModule],
 })
-export class AppModule { }
+export class AppModule {}
 ```
 
 Once the module is installed, you can use `WindowService` to create window dynamically:
 
 ```typescript
-import { Ng2WindowService } from 'ng2-window';
+import { Ng2WindowService } from "ng2-window";
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
+  standalone: false,
 })
 export class AppComponent {
-    constructor(private windowService: Ng2WindowService) { }
+  constructor(private windowService: Ng2WindowService) {}
 
-    windowManager = {
-        tpl: {
-            visible: false,
-            instance: null,
+  windowManager = {
+    tpl: {
+      visible: false,
+      instance: null,
+    },
+  };
+
+  openWindow(ref: TemplateRef<any>) {
+    this.windowService
+      .create({
+        title: "Window 1",
+        icon: "/assets/logo.png",
+        width: 800,
+        height: 500,
+        content: ref,
+        offsetX: 200,
+        offsetY: 100,
+        align: "leftTop",
+        bodyStyle: {
+          lineHeight: "1.5",
         },
-    };
-    
-    openWindow(ref: TemplateRef<any>) {
-        this.windowService.create({
-            title: 'Window 1',
-            icon: '/assets/logo.png',
-            width: 800,
-            height: 500,
-            content: ref,
-            offsetX: 200,
-            offsetY: 100,
-            align: 'leftTop',
-            bodyStyle: {
-                lineHeight: '1.5',
-            },
-        }).then((win: Ng2WindowComponent) => {
-            this.windowManager.tpl.instance = win;
+      })
+      .then((win: Ng2WindowComponent) => {
+        this.windowManager.tpl.instance = win;
 
-            win.onClose.subscribe(() => {
-                this.windowManager.tpl.visible = false;
-                this.windowManager.tpl.instance = null;
-            });
+        win.onClose.subscribe(() => {
+          this.windowManager.tpl.visible = false;
+          this.windowManager.tpl.instance = null;
         });
-    }
+      });
+  }
 }
 ```
+
 or use `ng-window` component in your Angular template:
 
 ```html
-<ng-window [title]="'My window'" [icon]="icon" [width]="800" [height]="600" [offsetX]="100" [offsetY]="100" align="leftTop">
-    <ng-template #icon>
-        <i class="fa fa-app"></i>
-    </ng-template>
+<ng-window
+  [title]="'My window'"
+  [icon]="icon"
+  [width]="800"
+  [height]="600"
+  [offsetX]="100"
+  [offsetY]="100"
+  align="leftTop"
+>
+  <ng-template #icon>
+    <i class="fa fa-app"></i>
+  </ng-template>
   <!-- Window content here -->
 </ng-window>
 ```
@@ -147,10 +166,12 @@ or use `ng-window` component in your Angular template:
 - `onMove`: Emitted when the window is moved
 
 ## Custom Style
+
 before use ng2-window, please import style varibles:
+
 ```less
-@import 'ng2-window/styles/theme/default';
-@import 'ng2-window/styles/style';
+@import "ng2-window/styles/theme/default";
+@import "ng2-window/styles/style";
 // If you want to import more style, you can import them after import default style:
 // @import 'ng2-window/styles/theme/default-dark';
 // @import 'ng2-window/styles/style-dark'; // if you are using dark style, you need also import this
@@ -162,9 +183,11 @@ before use ng2-window, please import style varibles:
 ```
 
 you can modify styles by overload less varibles:
+
 ```less
 @window-title-bar-text-align: left;
 ```
+
 All varibles (see here)[https://github.com/ousc/ng2-window/blob/main/projects/windowx/styles/theme/default.less]
 
 ## Development

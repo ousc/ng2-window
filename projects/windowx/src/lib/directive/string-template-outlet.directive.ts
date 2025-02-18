@@ -16,7 +16,8 @@ import {
 
 @Directive({
     selector: '[stringTemplateOutlet]',
-    exportAs: 'stringTemplateOutlet'
+    exportAs: 'stringTemplateOutlet',
+    standalone:false
 })
 export class StringTemplateOutletDirective<_T = unknown> implements OnChanges {
     private embeddedViewRef: EmbeddedViewRef<any> | null = null;

@@ -4,6 +4,7 @@ import {Ng2WindowService} from "../../ng2-window.service";
 
 @Component({
   selector: 'dock',
+  standalone: false,
   template: `
     <div [class]="'ng-window-dock' + themeSuffix">
       <div *ngFor="let dock of docks" class="ng-window-dock-item" (click)="restore(dock)">
