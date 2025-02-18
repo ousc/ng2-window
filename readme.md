@@ -45,7 +45,7 @@ export class AppModule {}
 Since > Angular 16, standalone is supported, you can set standalone to false to use ng-window component in your Angular
 template
 
-``````
+```typescript
 imports: [
     Ng2WindowComponent,
     DockComponent,
