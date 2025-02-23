@@ -17,7 +17,7 @@ import {Component} from '@angular/core';
     </svg>
   `,
   styles: [],
-  standalone: false
+  standalone: true
 })
 export class MinimizeIcon {
   constructor() {}

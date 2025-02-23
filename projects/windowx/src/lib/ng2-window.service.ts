@@ -3,8 +3,8 @@ import {
     ComponentFactoryResolver,
     ComponentRef,
     Injectable,
-    Injector,
-    TemplateRef,
+    Injector, signal,
+    TemplateRef, WritableSignal,
 } from '@angular/core';
 import {NavigationStart, Router} from '@angular/router';
 import {Subject} from 'rxjs';
@@ -60,7 +60,7 @@ export class Ng2WindowService {
     maxZIndex: number = 0;
     componentFactory = this._cfr.resolveComponentFactory(Ng2WindowComponent);
     instances: ComponentRef<Ng2WindowComponent>[] = [];
-    selectedWindow = null;
+    selectedWindow: WritableSignal<string> = signal(null);
     dockComponentRef: ComponentRef<DockComponent> = null;
 
     destroy(windowId: string) {
@@ -69,7 +69,7 @@ export class Ng2WindowService {
             this.detachView(componentRef);
             componentRef.destroy();
             this.instances = this.instances.filter(item => item.instance.windowId !== windowId);
-            this.selectedWindow = null;
+            this.selectedWindow.set(null)
         }
         if(this.instances.length === 0) {
             this.destroyDock();
@@ -133,16 +133,19 @@ export class Ng2WindowService {
             if (componentRef.instance.zIndex <= this.maxZIndex) {
                 componentRef.instance.zIndex = this.maxZIndex = componentRef.instance.zIndex++;
             }
-            this.selectedWindow = componentRef.instance.windowId;
+            this.selectedWindow.set(componentRef.instance.windowId);
             componentRef.changeDetectorRef.detectChanges();
             this._appRef.attachView(componentRef.hostView);
             this._appendToPage(componentRef.location.nativeElement, document.querySelector('#ng-window-wrapper'));
-            this.instances.push(componentRef);
+            this.instances = [
+                ...this.instances,
+                componentRef
+            ]
             componentRef.instance.onClose.subscribe(windowId => {
                 this.dockComponentRef.instance.docks = this.dockComponentRef.instance.docks.filter(win => win !== componentRef.instance);
                 this.destroy(windowId);
-                if (this.selectedWindow === windowId) {
-                    this.selectedWindow = null;
+                if (this.selectedWindow() === windowId) {
+                    this.selectedWindow.set(null);
                 }
             });
             resolve(componentRef.instance);

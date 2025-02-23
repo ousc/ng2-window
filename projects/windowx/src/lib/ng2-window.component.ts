@@ -1,6 +1,7 @@
 import {
     AfterViewInit,
     Component,
+    computed,
     ElementRef,
     EventEmitter,
     HostListener,
@@ -8,10 +9,18 @@ import {
     Output,
     signal,
     TemplateRef,
-    ViewChild
+    ViewChild,
+    WritableSignal
 } from '@angular/core';
 import {Ng2WindowService} from "./ng2-window.service";
 import {In, when} from "conditio";
+import {CommonModule} from "@angular/common";
+import {LoadingIcon} from "./components/icon/loading.icon";
+import {CloseIcon} from './components/icon/close.icon';
+import {MaximizeIcon} from "./components/icon/maximize.icon";
+import {MinimizeIcon} from './components/icon/minimize.icon';
+import {MaximizeDIcon} from "./components/icon/maximized.icon";
+import {StringTemplateOutletDirective} from "./directive/string-template-outlet.directive";
 
 interface WindowSize {
     offsetY: number;
@@ -24,7 +33,8 @@ interface WindowSize {
 @Component({
     selector: 'ng-window',
     templateUrl: 'ng2-window.component.html',
-    standalone: false
+    imports: [CommonModule, CloseIcon, LoadingIcon, MaximizeIcon, MinimizeIcon, MaximizeDIcon, StringTemplateOutletDirective],
+    standalone: true,
 })
 export class Ng2WindowComponent implements AfterViewInit {
     windowId = 'window' + Math.floor(Math.random() * 1000000);
@@ -53,6 +63,46 @@ export class Ng2WindowComponent implements AfterViewInit {
     @Input() draggable = true;
     //允许窗口超出屏幕
     @Input() outOfBounds = false;
+    @Input() loadingTip: string | TemplateRef<any> = this.getLocaleText('loading');
+    @Input() contentScrollable: boolean = false;
+    position: WritableSignal<{ [key: string]: string }> = signal({});
+    dragging = false;
+    windowMouseEnterFlag = false;
+    windowMouseDownFlag = false;
+    windowMouseLeaveFlag = true;
+    clickedX: number;
+    clickedY: number;
+    mouseEvent: MouseEvent;
+    mouseEntered: MouseEvent;
+    borderWidth = 4;
+    cursorStyle = 'default';
+    display = 'none';
+    border: {
+        isLeft?: boolean;
+        isRight?: boolean;
+        isTop?: boolean;
+        isBottom?: boolean;
+    } = {
+        isLeft: false,
+        isRight: false,
+        isTop: false,
+        isBottom: false
+    }
+    @Output('onReady') onReady = new EventEmitter<Ng2WindowComponent>();
+    @Output('onClose') onClose = new EventEmitter<string>();
+    @Output('onResize') onResize = new EventEmitter<WindowSize>();
+    @Output('onMaximize') onMaximize = new EventEmitter<WindowSize>();
+    @Output('onMaximizeRestore') onMaximizeRestore = new EventEmitter<WindowSize>();
+    @Output('onMinimize') onMinimize = new EventEmitter<WindowSize>();
+    @Output('onMinimizeRestore') onMinimizeRestore = new EventEmitter<WindowSize>();
+    @Output('onSelected') onSelected = new EventEmitter<string>();
+    @Output('onMove') onMove = new EventEmitter<WindowSize>();
+    minimized = false;
+    maximized = false;
+    propertyBeforeMaximize: WindowSize = null;
+
+    constructor(private windowService: Ng2WindowService) {
+    }
 
     get themeSuffix() {
         return this.theme === 'dark' ? '-dark' : '';
@@ -62,7 +112,39 @@ export class Ng2WindowComponent implements AfterViewInit {
         return this.windowService.language;
     }
 
-    @Input() loadingTip: string | TemplateRef<any> = this.getLocaleText('loading');
+    get windowSize(): WindowSize {
+        return {
+            offsetX: this.offsetX,
+            offsetY: this.offsetY,
+            align: this.align,
+            width: this.width,
+            height: this.height
+        }
+    }
+
+    get left() {
+        return (this.align === 'leftTop' || this.align === 'leftBottom' ? this.offsetX : window.innerWidth - this.width - this.offsetX);
+    }
+
+    get right() {
+        return (this.align === 'rightTop' || this.align === 'rightBottom' ? window.innerWidth - this.offsetX : this.width + this.offsetX);
+    }
+
+    get top() {
+        return (this.align === 'leftTop' || this.align === 'rightTop' ? this.offsetY : window.innerHeight - this.height - this.offsetY);
+    }
+
+    get bottom() {
+        return (this.align === 'leftBottom' || this.align === 'rightBottom' ? window.innerHeight - this.offsetY : this.height + this.offsetY);
+    }
+
+    get selected() {
+        return computed(() => this.windowService.selectedWindow() === this.windowId);
+    }
+
+    @ViewChild('titleBar', {static: false}) set titleBar(titleBar: ElementRef) {
+        this.titleHeight = titleBar.nativeElement.offsetHeight;
+    }
 
     getLocaleText(text: 'loading' | 'close' | 'maximize' | 'minimize' | 'windowMode') {
         const dictionary = {
@@ -84,100 +166,46 @@ export class Ng2WindowComponent implements AfterViewInit {
         return dictionary[this.language][text];
     }
 
-    @Input() contentScrollable: boolean = false;
-
-    get windowSize(): WindowSize {
-        return {
-            offsetX: this.offsetX,
-            offsetY: this.offsetY,
-            align: this.align,
-            width: this.width,
-            height: this.height
-        }
-    }
-
-    position: { [key: string]: string } = {};
-
     updateOffsetX(offsetX) {
         this.offsetX = offsetX;
-        if (this.align.includes('left')) {
-            this.position = {
-                ...this.position,
-                left: offsetX + 'px',
-                right: null
-            }
+        if (['leftTop', 'leftBottom'].includes(this.align)) {
+            this.position.update(oldValue => {
+                return {
+                    ...oldValue,
+                    left: offsetX + 'px',
+                    right: null
+                }
+            })
         } else {
-            this.position = {
-                ...this.position,
-                left: null,
-                right: offsetX + 'px'
-            }
+            this.position.update(oldValue => {
+                return {
+                    ...oldValue,
+                    left: null,
+                    right: offsetX + 'px'
+                }
+            })
         }
     }
 
     updateOffsetY(offsetY) {
         this.offsetY = offsetY;
-        if (this.align.includes('Top')) {
-            this.position = {
-                ...this.position,
-                top: offsetY + 'px',
-                bottom: null
-            }
+        if (['leftTop', 'rightTop'].includes(this.align)) {
+            this.position.update(oldValue => {
+                return {
+                    ...oldValue,
+                    top: offsetY + 'px',
+                    bottom: null
+                }
+            })
         } else {
-            this.position = {
-                ...this.position,
-                top: null,
-                bottom: offsetY + 'px'
-            }
+            this.position.update(oldValue => {
+                return {
+                    ...oldValue,
+                    top: null,
+                    bottom: offsetY + 'px'
+                }
+            })
         }
-    }
-
-    dragging = false;
-    windowMouseEnterFlag = false;
-    windowMouseDownFlag = false;
-    windowMouseLeaveFlag = true;
-
-    clickedX: number;
-    clickedY: number;
-
-    mouseEvent: MouseEvent;
-
-    mouseEntered: MouseEvent;
-
-    borderWidth = 4;
-
-    cursorStyle = 'default';
-    display = 'none';
-
-    border: {
-        isLeft?: boolean;
-        isRight?: boolean;
-        isTop?: boolean;
-        isBottom?: boolean;
-    } = {
-        isLeft: false,
-        isRight: false,
-        isTop: false,
-        isBottom: false
-    }
-
-    constructor(private windowService: Ng2WindowService) {
-    }
-
-    get left() {
-        return (this.align === 'leftTop' || this.align === 'leftBottom' ? this.offsetX : window.innerWidth - this.width - this.offsetX);
-    }
-
-    get right() {
-        return (this.align === 'rightTop' || this.align === 'rightBottom' ? window.innerWidth - this.offsetX : this.width + this.offsetX);
-    }
-
-    get top() {
-        return (this.align === 'leftTop' || this.align === 'rightTop' ? this.offsetY : window.innerHeight - this.height - this.offsetY);
-    }
-
-    get bottom() {
-        return (this.align === 'leftBottom' || this.align === 'rightBottom' ? window.innerHeight - this.offsetY : this.height + this.offsetY);
     }
 
     @HostListener('document:mousemove', ['$event'])
@@ -191,7 +219,7 @@ export class Ng2WindowComponent implements AfterViewInit {
                 when(this.align)(
                     In('leftTop', 'leftBottom',
                         () => {
-                            if(!this.outOfBounds) {
+                            if (!this.outOfBounds) {
                                 let offsetX = Math.max(event.clientX - this.clickedX, 0);
                                 if (offsetX + this.width > window.innerWidth) {
                                     offsetX = window.innerWidth - this.width;
@@ -203,7 +231,7 @@ export class Ng2WindowComponent implements AfterViewInit {
                         }),
                     In('rightTop', 'rightBottom',
                         () => {
-                            if(!this.outOfBounds) {
+                            if (!this.outOfBounds) {
                                 let offsetX = Math.max(window.innerWidth - event.clientX + this.clickedX - this.width, 0);
                                 if (offsetX + this.width > window.innerWidth) {
                                     offsetX = window.innerWidth - this.width;
@@ -218,7 +246,7 @@ export class Ng2WindowComponent implements AfterViewInit {
             this.updateOffsetY(
                 when(this.align)(
                     In('leftTop', 'rightTop', () => {
-                        if(!this.outOfBounds){
+                        if (!this.outOfBounds) {
                             let offsetY = Math.max(event.clientY - this.clickedY, 0);
                             if (offsetY + this.height > window.innerHeight) {
                                 offsetY = window.innerHeight - this.height;
@@ -229,7 +257,7 @@ export class Ng2WindowComponent implements AfterViewInit {
                         }
                     }),
                     In('leftBottom', 'rightBottom', () => {
-                        if(!this.outOfBounds){
+                        if (!this.outOfBounds) {
                             let offsetY = Math.max(window.innerHeight - event.clientY + this.clickedY - this.height, 0);
                             if (offsetY + this.height > window.innerHeight) {
                                 offsetY = window.innerHeight - this.height;
@@ -379,7 +407,7 @@ export class Ng2WindowComponent implements AfterViewInit {
         if (!this.outOfBounds && this.width + this.offsetX > window.innerWidth) {
             this.updateOffsetX(Math.max(window.innerWidth - this.width, 0));
         }
-        if(this.offsetY < 0) {
+        if (this.offsetY < 0) {
             this.updateOffsetY(0);
         }
         this.onResize.emit(this.windowSize);
@@ -409,7 +437,7 @@ export class Ng2WindowComponent implements AfterViewInit {
     }
 
     windowMouseDown(event: MouseEvent) {
-        this.windowService.selectedWindow = this.windowId;
+        this.windowService.selectedWindow.set(this.windowId);
         if (!this.draggable || event.button === 2) {
             return;
         }
@@ -428,16 +456,6 @@ export class Ng2WindowComponent implements AfterViewInit {
         this.windowMouseEnterFlag = false;
     }
 
-    @Output('onReady') onReady = new EventEmitter<Ng2WindowComponent>();
-    @Output('onClose') onClose = new EventEmitter<string>();
-    @Output('onResize') onResize = new EventEmitter<WindowSize>();
-    @Output('onMaximize') onMaximize = new EventEmitter<WindowSize>();
-    @Output('onMaximizeRestore') onMaximizeRestore = new EventEmitter<WindowSize>();
-    @Output('onMinimize') onMinimize = new EventEmitter<WindowSize>();
-    @Output('onMinimizeRestore') onMinimizeRestore = new EventEmitter<WindowSize>();
-    @Output('onSelected') onSelected = new EventEmitter<string>();
-    @Output('onMove') onMove = new EventEmitter<WindowSize>();
-
     close() {
         if (this.closable) {
             this.height = 0;
@@ -447,11 +465,6 @@ export class Ng2WindowComponent implements AfterViewInit {
             this.onClose.emit(this.windowId);
         }
     }
-
-    minimized = false;
-    maximized = false;
-
-    propertyBeforeMaximize: WindowSize = null;
 
     minimize() {
         window.onresize = null;
@@ -525,10 +538,6 @@ export class Ng2WindowComponent implements AfterViewInit {
         this.onResize.emit(this.windowSize);
     }
 
-    get selected() {
-        return this.windowService.selectedWindow === this.windowId;
-    }
-
     toggleBodyScrollable(scrollable = true) {
         setTimeout(() => {
             if (scrollable) {
@@ -539,20 +548,14 @@ export class Ng2WindowComponent implements AfterViewInit {
         }, 200);
     }
 
-    @ViewChild('titleBar', {static: false}) set titleBar(titleBar: ElementRef) {
-        this.titleHeight = titleBar.nativeElement.offsetHeight;
-    }
     async ngAfterViewInit(): Promise<void> {
         if (this.maximized) {
             this.display = 'none';
             this.maximized = false;
             await this.maximize();
-            this.display = 'block';
-            this.loading.set(false)
-        } else {
-            this.display = 'block';
-            this.loading.set(false);
         }
+        this.display = 'block';
+        this.loading.set(false)
         this.onReady.emit(this);
         this.updateOffsetX(this.offsetX);
         this.updateOffsetY(this.offsetY);

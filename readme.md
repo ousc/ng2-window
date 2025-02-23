@@ -21,9 +21,9 @@ npm install ng2-window --save
 Latest version available for each version of Angular
 
 | ng2-window | Angular |
-| ---------- | ------- |
+|------------| ------- |
 | 1.1.6      | 16.0.0+ |
-| 2.0.0      | 19.0.0+ |
+| 2.0.1      | 19.0.0+ |
 
 ## Usage
 
@@ -37,7 +37,10 @@ Then add `Ng2WindowModule` to your app's module imports:
 
 ```typescript
 @NgModule({
-  imports: [Ng2WindowModule],
+  imports: [
+      Ng2WindowModule, 
+      BrowserAnimationsModule // required for animations
+  ],
 })
 export class AppModule {}
 ```
@@ -49,11 +52,7 @@ template
 imports: [
     Ng2WindowComponent,
     DockComponent,
-    CloseIcon,
-    LoadingIcon,
-    MaximizeIcon,
-    MinimizeIcon,
-    MinimizedIcon,
+    BrowserAnimationsModule // required for animations
 ]
 ```
 

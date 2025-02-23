@@ -5,6 +5,7 @@ import {AppComponent} from './app.component';
 import {CommonModule} from "@angular/common";
 import {Ng2WindowModule} from "../../projects/windowx/src/lib/ng2-window.module";
 import {Sample1Component} from "./samples/sample1.component";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
     declarations: [
@@ -14,7 +15,8 @@ import {Sample1Component} from "./samples/sample1.component";
     imports: [
         BrowserModule,
         CommonModule,
-        Ng2WindowModule
+        Ng2WindowModule,
+        BrowserAnimationsModule
     ],
     bootstrap: [AppComponent]
 })

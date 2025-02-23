@@ -16,12 +16,21 @@ To install `ng2-window`, simply run:
 npm install ng2-window --save
 ```
 
+# Dependencies
+
+Latest version available for each version of Angular
+
+| ng2-window | Angular |
+|------------| ------- |
+| 1.1.6      | 16.0.0+ |
+| 2.0.1      | 19.0.0+ |
+
 ## Usage
 
 Import `ng2-window` module in your Angular app:
 
 ```typescript
-import { Ng2WindowModule } from 'ng2-window';
+import { Ng2WindowModule } from "ng2-window";
 ```
 
 Then add `Ng2WindowModule` to your app's module imports:
@@ -29,65 +38,89 @@ Then add `Ng2WindowModule` to your app's module imports:
 ```typescript
 @NgModule({
   imports: [
-      Ng2WindowModule
-  ]
+      Ng2WindowModule, 
+      BrowserAnimationsModule // required for animations
+  ],
 })
-export class AppModule { }
+export class AppModule {}
+```
+
+Since > Angular 16, standalone is supported, you can set standalone to false to use ng-window component in your Angular
+template
+
+```typescript
+imports: [
+    Ng2WindowComponent,
+    DockComponent,
+    BrowserAnimationsModule // required for animations
+]
 ```
 
 Once the module is installed, you can use `WindowService` to create window dynamically:
 
 ```typescript
-import { Ng2WindowService } from 'ng2-window';
+import { Ng2WindowService } from "ng2-window";
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css'],
-    standalone: false
+    selector: "app-root",
+    templateUrl: "./app.component.html",
+    styleUrls: ["./app.component.css"],
+    standalone: false,
 })
 export class AppComponent {
-    constructor(private windowService: Ng2WindowService) { }
+    constructor(private windowService: Ng2WindowService) {}
 
-    windowManager = {
-        tpl: {
-            visible: false,
-            instance: null,
-        },
-    };
-    
+    windows: { [key: string]: {
+            window: Ng2WindowComponent,
+            visible: boolean
+        }
+    } = {};
+
     openWindow(ref: TemplateRef<any>) {
-        this.windowService.create({
-            title: 'Window 1',
-            icon: '/assets/logo.png',
-            width: 800,
-            height: 500,
-            content: ref,
-            offsetX: 200,
-            offsetY: 100,
-            align: 'leftTop',
-            bodyStyle: {
-                lineHeight: '1.5',
-            },
-        }).then((win: Ng2WindowComponent) => {
-            this.windowManager.tpl.instance = win;
-
-            win.onClose.subscribe(() => {
-                this.windowManager.tpl.visible = false;
-                this.windowManager.tpl.instance = null;
+        this.windowService
+            .create({
+                title: "Window 1",
+                icon: "/assets/logo.png",
+                width: 800,
+                height: 500,
+                content: ref,
+                offsetX: 200,
+                offsetY: 100,
+                align: "leftTop",
+                bodyStyle: {
+                    lineHeight: "1.5",
+                },
+            })
+            .then((window: Ng2WindowComponent) => {
+                this.windows[window.id] = {
+                    window,
+                    visible: true,
+                };
+                window.onClose.subscribe(() => {
+                    this.windows[window.id].visible = false;
+                    this.windows[window.id].window = null;
+                });
             });
-        });
     }
 }
 ```
+
 or use `ng-window` component in your Angular template:
 
 ```html
-<ng-window [title]="'My window'" [icon]="icon" [width]="800" [height]="600" [offsetX]="100" [offsetY]="100" align="leftTop">
+<ng-window
+        [title]="'My window'"
+        [icon]="icon"
+        [width]="800"
+        [height]="600"
+        [offsetX]="100"
+        [offsetY]="100"
+        align="leftTop"
+>
     <ng-template #icon>
         <i class="fa fa-app"></i>
     </ng-template>
-  <!-- Window content here -->
+    <!-- Window content here -->
 </ng-window>
 ```
 
@@ -146,6 +179,38 @@ or use `ng-window` component in your Angular template:
 - `onMinimizeRestore`: Emitted when the window is restored
 - `onSelected`: Emitted when the window is selected
 - `onMove`: Emitted when the window is moved
+
+## Custom Style
+
+before use ng2-window, please import style varibles:
+
+```css
+@import "ng2-window/styles/theme/default.css";
+@import "ng2-window/styles/style.css";
+/*If you want to import more style, you can import them after import default style:*/
+@import 'ng2-window/styles/theme/default-dark.css';
+
+/*other theme we apply:*/
+/*@import 'ng2-window/styles/theme/default.css'*/
+/*@import 'ng2-window/styles/theme/macos.css'*/
+/*@import 'ng2-window/styles/theme/material-design.css'*/
+```
+
+you can modify styles by overload css varibles:
+
+```css
+/*For example, you can change the window title bar text align*/
+:root {
+    --window-title-bar-text-align: left;
+}
+
+/*Or you can change the window title bar text align for dark theme*/
+.ng-window-theme-dark {
+    --window-title-bar-text-align: center;
+}
+```
+
+All variables (see here)[https://github.com/ousc/ng2-window/blob/main/projects/windowx/styles/theme/default.css]
 
 ## Development
 

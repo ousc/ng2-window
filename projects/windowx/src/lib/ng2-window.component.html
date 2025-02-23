@@ -1,6 +1,6 @@
 <div [ngClass]="['ng-window', 'ng-window-theme' + themeSuffix]"
      [hidden]="loading()"
-     [ngStyle]="position"
+     [ngStyle]="position()"
      [style.width.px]='width'
      [style.height.px]='height'
      [style.cursor]='cursorStyle'
@@ -9,8 +9,8 @@
 ></div>
 <div [class]="'ng-window ng-window-theme' + themeSuffix"
      [hidden]="loading()"
-     [ngClass]="{'selected': selected, 'minimized': minimized, 'maximized': maximized}"
-     [ngStyle]="position"
+     [ngClass]="{'selected': selected(), 'minimized': minimized, 'maximized': maximized}"
+     [ngStyle]="position()"
      [style.width.px]='width'
      [style.height.px]='height'
      [style.cursor]='cursorStyle'

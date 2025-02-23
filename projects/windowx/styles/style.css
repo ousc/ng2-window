@@ -103,12 +103,15 @@
     color: var(--window-title-bar-color);
     border-radius: 4px;
     margin-right: 5px;
-    display: flex;
     align-items: center;
     justify-content: center;
     pointer-events: auto;
     cursor: pointer;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform: translateZ(0);
   }
 
   close-icon {
