@@ -11,5 +11,4 @@ export * from './lib/components/icon/minimize.icon';
 export * from './lib/components/icon/loading.icon';
 export * from './lib/components/icon/maximized.icon';
 export * from './lib/components/dock/dock.component';
-export * from './lib/directive/outlet.module';
 export * from './lib/directive/string-template-outlet.directive';
