@@ -27,5 +27,9 @@
     "move",
     "less",
     "customizable"
-  ]
+  ],
+  "exports": {
+    "./styles/*.css": "./styles/*.css",
+    "./styles/theme/*.css": "./styles/theme/*.css"
+  }
 }
